@@ -1,0 +1,12 @@
+.profile-image-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.profile-image{
+    width: 200px;
+    height: 200px;
+    background-image: url('./img/profile.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}

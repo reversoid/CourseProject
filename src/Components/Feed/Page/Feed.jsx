@@ -7,31 +7,6 @@ export const Feed = () => {
     return (
         <>
             <Navigation />
-
-            
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <section className='container-xxl text-light main-section'>
                 <h1 className='py-3'>Reviews</h1>
                 <div className="row">
