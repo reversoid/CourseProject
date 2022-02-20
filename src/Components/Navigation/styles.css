@@ -1,0 +1,23 @@
+.logo{
+    height: 60px;
+    background-image: url("./img/logo.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    
+   width: 150px;
+   
+   background-position: center;
+}
+nav{
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px auto !important;
+}
+input{
+    width: 550px !important;
+}
+.category-item{
+    margin: 0 15px;
+}

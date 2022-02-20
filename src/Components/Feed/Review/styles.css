@@ -1,35 +1,5 @@
-.logo{
-    height: 60px;
-    background-image: url("./logo.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    
-   width: 150px;
-   
-   background-position: center;
-}
-nav{
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 10px auto !important;
-}
-input{
-    width: 550px !important;
-}
-.category-item{
-    margin: 0 15px;
-}
-.main-section{
-    margin-top: 10px;
-}
-.review{
+.reviewContent{
     border: 2px solid #ff0000;
-    border-radius: 35px;
-}
-.filters{
-    border: 2px solid white;
     border-radius: 35px;
 }
 .star{
@@ -53,7 +23,7 @@ input{
 }
 .like{
     display: inline-block;
-    background-image: url("./like.svg");
+    background-image: url("./img/like.svg");
     width: 30px;
     height: 30px;
 }
@@ -64,7 +34,7 @@ input{
     display: inline-block;
     width: 30px;
     height: 30px;
-    background-image: url("./down-arrow.svg");
+    background-image: url("./img/down-arrow.svg");
 }
 .comments-panel{
     height: 100%;
