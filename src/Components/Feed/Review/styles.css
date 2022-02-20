@@ -10,7 +10,7 @@
     display: inline-block;
     margin-right: 5px;
 }
-.feedback{
+.feedback-panel{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,4 +40,12 @@
     height: 100%;
     display: flex;
     align-items: center;
+}
+.comment-img{
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+    background-color: #ff0000;
+    border-radius: 50%;
 }
