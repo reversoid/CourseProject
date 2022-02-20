@@ -15,9 +15,25 @@ nav{
     justify-content: space-between;
     margin: 10px auto !important;
 }
-input{
+.search{
     width: 550px !important;
 }
 .category-item{
     margin: 0 15px;
+}
+.auth-logo{
+    width: 38px;
+    height: 38px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+}
+.auth-logo:hover{
+    cursor: pointer;
+}
+.google{
+    background-image: url('./img/google.svg');
+}
+.facebook{
+    background-image: url('./img/facebook.svg');
 }
