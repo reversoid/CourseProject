@@ -1,7 +1,9 @@
 import React from "react"
+import {registration} from '../../api/registration'
 
 
 export const AuthModal = () => {
+    registration('georgellllll','123')
     return (
         <div className="modal fade" id="authModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
