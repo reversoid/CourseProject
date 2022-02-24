@@ -1,21 +1,15 @@
 import axios from 'axios'
-import {myUrl} from '../../server/config.json'
+import config from '../config.json'
 
-export const registration = async (username, password) => {
+export const registration = async (username, password, showInfo) => {
     try {
-        const response = await axios.post('https://reversoid.herokuapp.com/api/auth/registration', {
+        const response = await axios.post(config.myUrl+'/api/auth/login', {
         username,
         password
         })
-        
-        localStorage.setItem('token', response.data.token)
-        console.log('token',response.data.token)
-
-        console.log(response.data)
         showInfo(response.data)
        
     } catch (e) {
-        console.log(e.response.data.message)
         showInfo(e.response.data)
     }
 }

@@ -16,12 +16,36 @@ const generateAcessToken = (id, username) => {
 class authController{
     async registration(req, res) {
         try {
-            console.log('here')
             const {username, password} = req.body
             const candidate = await User.findOne({where: {username}})
 
             if (candidate)
                 return res.status(400).json({message: 'User already exists', code: 1})
+
+
+            const hashedPassword = bcrypt.hashSync(password, 7)
+
+            
+            const user= new User({
+                username,
+                password: hashedPassword
+            })
+
+            await user.save()
+           
+            const token = generateAcessToken(user._id, user.username)
+            return res.json({message: 'User has been succesfully created', code: 0, token})
+        } catch (e) {
+            res.status(400).json({message: 'Registration error', code: 1, e})
+        }
+    }
+    async login(req, res) {
+        try {
+            const {username, password} = req.body
+            const candidate = await User.findOne({where: {username}})
+
+            if (!candidate)
+                return res.status(400).json({message: 'Incorrect user or password', code: 1})
 
 
             const hashedPassword = bcrypt.hashSync(password, 7)

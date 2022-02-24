@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 8000
 const app = express()
 
 // app use
-app.use(corsMiddleware)
+
 app.use(express.static(__dirname))
 app.use(express.static(path.resolve(__dirname, 'build')))
 
@@ -29,6 +29,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname,  "build", "index.html"))
 })
 
+app.use(corsMiddleware)
 app.use(express.json())
 app.use('/api/auth', authRouter)
 
