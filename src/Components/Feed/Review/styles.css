@@ -35,6 +35,10 @@
     width: 30px;
     height: 30px;
     background-image: url("./img/down-arrow.svg");
+    transition: ease-in-out 0.15s;
+}
+.down-arrow:hover{
+    cursor: pointer;
 }
 .comments-panel{
     height: 100%;
@@ -48,4 +52,11 @@
     height: 40px;
     background-color: #ff0000;
     border-radius: 50%;
+}
+.collapsed{
+    display: none;
+}
+.rotated{
+    transform: rotate(180deg);
+    transition: ease-in-out 0.15s;
 }
