@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { registration } from '../../api/registration'
+import { toRegister } from '../../api/registration'
+import { toLogin } from '../../api/login'
+
 import { Loader } from "../Loader/Loader"
 
 
@@ -59,11 +61,13 @@ export const AuthModal = () => {
                         <div className="buttons">
                             <button type="button"
                                 className="btn btn-warning me-3"
-                                onClick={() => registration(login, password, showInfo)}>
+                                onClick={() => toRegister(login, password, showInfo)}>
                                 Registration
                             </button>
                             <button type="button"
-                            className="btn btn-primary">Login</button>
+                            className="btn btn-primary"
+                            onClick={()=> toLogin(login, password, showInfo)}>
+                                Login</button>
                         </div>
                     </div>
                 </div>

@@ -9,7 +9,6 @@ const generateAcessToken = (id, username) => {
         id,
         username
     }
-    
     return jwt.sign(payload, secret, {expiresIn: '48h'})
 }
 
@@ -43,25 +42,23 @@ class authController{
         try {
             const {username, password} = req.body
             const candidate = await User.findOne({where: {username}})
-
+            
             if (!candidate)
                 return res.status(400).json({message: 'Incorrect user or password', code: 1})
 
-
-            const hashedPassword = bcrypt.hashSync(password, 7)
-
             
-            const user= new User({
-                username,
-                password: hashedPassword
-            })
+            const validPassword = bcrypt.compareSync(password, candidate.getDataValue('password'))
+            if(!validPassword){
+                return res.status(400).json({message: 'Incorrect user or password', code: 1})
+            }
 
-            await user.save()
-           
-            const token = generateAcessToken(user._id, user.username)
-            return res.json({message: 'User has been succesfully created', code: 0, token})
+            // create jwt
+            const token = generateAcessToken(candidate.getDataValue('id'), candidate.getDataValue('username'))
+            console.log(token)
+            return res.json({message: 'Sucessful login', token: token, code: 0})
+            
         } catch (e) {
-            res.status(400).json({message: 'Registration error', code: 1, e})
+            res.status(400).json({message: 'Login error', code: 1, e})
         }
     }
     

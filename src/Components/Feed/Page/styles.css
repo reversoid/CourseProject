@@ -1,0 +1,15 @@
+.add-btn{
+    background-image: url('./img/add.svg');
+    width: 30px;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.add-btn:hover{
+    cursor: pointer;
+}
+.toolbar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
