@@ -70,7 +70,7 @@
     background-color: #ffc400;
 }
 .good{
-    background-color: #73ff00;
+    background-color: #7bff00;
 }
 .excellent{
     background-color: #00ff00;
@@ -86,9 +86,8 @@
     border: 2px solid #ffc400;
 }
 .border-good{
-    border: 2px solid #73ff00;
+    border: 2px solid #7bff00;
 }
 .border-excellent{
     border: 2px solid #00ff00;
 }
-

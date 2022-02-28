@@ -70,6 +70,26 @@ class authController{
             res.status(400).json({message: 'Error accessing to database', code: 1})
         }
     }
+    async publish(req, res) {
+        try {
+            const {title, text, rating} = req.body
+            
+            const post = new Post({
+                title,
+                text,
+                created: Date.now(),
+                like_count: 0,
+                uid_fk: 1,
+                rating
+            })
+            
+            await post.save()
+
+            return res.json({message: 'Post has been published', code: 0, token})
+        } catch (e) {
+            res.status(400).json({message: 'Post publishing error', code: 1, e})
+        }
+    }
     
 }
 

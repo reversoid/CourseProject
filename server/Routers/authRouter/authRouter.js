@@ -6,5 +6,7 @@ const router = new Router()
 router.post('/registration', controller.registration)
 router.post('/login', controller.login)
 router.post('/getPosts', controller.getPosts)
+router.post('/publish', controller.publish)
+
 
 module.exports = router

@@ -1,11 +1,18 @@
 import React, { useCallback } from "react";
 import { DropZone } from "./DropZone";
+import RichEditor from "./RichEditor";
+import {publish} from "../../../api/publish"
 
 export const AddReviewModal = () => {
+
     const onDrop = useCallback(acceptedFiles => {
         // this callback will be called after files get dropped, we will get the acceptedFiles. If you want, you can even access the rejected files too
         console.log(acceptedFiles);
-      }, []);
+    }, []);
+
+    function setRating(target){
+        console.log(target.id)
+    }
 
     return (
         <div className="modal fade" id="addModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -16,15 +23,31 @@ export const AddReviewModal = () => {
                         <button type="button" className="btn-close bg-light " data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <div className="container m-auto d-flex justify-content-center flex-column">
-                            <input type="text" placeholder="Title" className="form-control mb-3"/>
-                            <textarea className="form-control" name="" id="" cols="30" rows="10" placeholder="Review itself"></textarea>
-                            <DropZone onDrop={onDrop} accept={"image/*"} />
+                        <div className="container m-auto d-flex justify-content-center flex-column text-dark">
+                            <input type="text" placeholder="Title" id="title" className="form-control my-3 mb-5" />
+                            {/* <textarea className="form-control" name="" id="" cols="30" rows="10" placeholder="Review itself"></textarea> */}
+                            
+                            <RichEditor/>
+                            
+                            <div className="text-light mt-5">
+                                <div className="stars" onClick={(event)=> setRating(event.target)}>
+                                    <div className="star star-editable" id="one"></div>
+                                    <div className="star star-editable" id="two"></div>
+                                    <div className="star star-editable" id="three"></div>
+                                    <div className="star star-editable" id="four"></div>
+                                    <div className="star star-editable" id="five"></div>
+                                </div>
+                                
+                                <DropZone onDrop={onDrop} accept={"image/*"} />
+                            </div>
                         </div>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary">Save changes</button>
+                        <button type="button"
+                        className="btn btn-primary"
+                        onClick={()=>publish('1', '2', 5)}
+                        >Publish</button>
                     </div>
                 </div>
             </div>

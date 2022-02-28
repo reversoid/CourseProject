@@ -13,3 +13,23 @@
     flex-direction: row;
     align-items: center;
 }
+div.DraftEditor-root{
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+div.public-DraftStyleDefault-block{
+    margin-top: 0;
+}
+div.public-DraftStyleDefault-ltr{
+    margin-bottom: 0;
+}
+div.rdw-editor-toolbar{
+    border-radius: 4px;
+}
+.stars{
+    display: inline-block;
+}
+.star-editable{
+    cursor: pointer;
+}
