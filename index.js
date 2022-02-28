@@ -2,17 +2,12 @@ const express = require('express')
 const path = require ('path')
 const corsMiddleware = require('./server/middleware/corsMiddleware')
 const authRouter = require('./server/Routers/authRouter/authRouter')
-
+const apiRouter = require('./server/Routers/apiRouter/apiRouter')
 const {mySqlUri} = require('./server/config.json')
 
 // database
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(mySqlUri)
-
-// const User = require('./server/db/Models/User')
-
-// const x = new User({username: 'george2', password: '123'})
-// x.save()
 
 
 const PORT = process.env.PORT || 8000

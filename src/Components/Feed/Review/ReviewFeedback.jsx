@@ -23,7 +23,7 @@ export const ReviewFeedback = () => {
                 </div>
             </div>
             
-            <div className={commentCollapsed?"container px-5 collapsed":"container px-5"}>
+            <div className={commentCollapsed?"container px-5 collapsed":"container-lg px-5 mx-0"}>
                 <Comment/>
                 <Comment/>
             </div>

@@ -60,3 +60,35 @@
     transform: rotate(180deg);
     transition: ease-in-out 0.15s;
 }
+.very-bad{
+    background-color: #ff0000;
+}
+.bad{
+    background-color: #ff4800;
+}
+.satisfactory{
+    background-color: #ffc400;
+}
+.good{
+    background-color: #73ff00;
+}
+.excellent{
+    background-color: #00ff00;
+}
+
+.border-very-bad{
+    border: 2px solid #ff0000;
+}
+.border-bad{
+    border: 2px solid #ff4800;
+}
+.border-satisfactory{
+    border: 2px solid #ffc400;
+}
+.border-good{
+    border: 2px solid #73ff00;
+}
+.border-excellent{
+    border: 2px solid #00ff00;
+}
+

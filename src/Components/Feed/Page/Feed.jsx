@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Filter } from '../Filter/Filter'
 import { Review } from '../Review/Review'
 import { Navigation } from '../../Navigation/Navigation'
 import './styles.css'
 import { AddReviewModal } from './AddReviewModal'
 import { DropZone } from './DropZone'
+import { getPosts } from '../../../api/getPosts'
 export const Feed = () => {
+    let [posts, setPosts] = useState([])
+
+    useEffect(()=>{
+        getPosts().then((response)=>{setPosts(response)})
+    }, [])
     return (
         <>
             <Navigation />
@@ -17,11 +23,11 @@ export const Feed = () => {
                 </div>
 
                 <div className="row">
-                    <div className="col-9">
+                    <div className="col-md-12 col-lg-9">
                         {/* Make for loop */}
-                        <Review />
+                        {posts.map((post, index) => {return <Review post={post} key={index}/>})}                        
                     </div>
-                    <div className="col-3">
+                    <div className="col-lg-3 d-none d-lg-block">
                         <Filter />
                     </div>
                 </div>

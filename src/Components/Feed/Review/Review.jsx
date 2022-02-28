@@ -3,10 +3,10 @@ import { ReviewContent } from "./ReviewContent"
 import { ReviewFeedback } from "./ReviewFeedback"
 
 import './styles.css'
-export const Review = () => {
+export const Review = (props) => {
   return (
     <div className="review-container mb-5">
-      <ReviewContent />
+      <ReviewContent review={props.post}/>
       <ReviewFeedback />
     </div>)
 }
