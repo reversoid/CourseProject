@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { DropZone } from "./DropZone";
 import RichEditor from "./RichEditor";
 import {publish} from "../../../api/publish"
@@ -10,9 +10,24 @@ export const AddReviewModal = () => {
         console.log(acceptedFiles);
     }, []);
 
+    let [rating, setUserRating] = useState(0)
     function setRating(target){
-        console.log(target.id)
-    }
+        if(!target.id)
+            return
+        if(target.id === "one")
+            setUserRating(1)
+        else if (target.id === "two")
+            setUserRating(2)
+        else if (target.id === "three")
+            setUserRating(3)
+        else if (target.id === "four")
+            setUserRating(4)
+        else if (target.id === "five")
+            setUserRating(5)
+        }
+    
+        let [title, setTitle] = useState('')
+        let [text, setText] = useState('')
 
     return (
         <div className="modal fade" id="addModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -24,7 +39,13 @@ export const AddReviewModal = () => {
                     </div>
                     <div className="modal-body">
                         <div className="container m-auto d-flex justify-content-center flex-column text-dark">
-                            <input type="text" placeholder="Title" id="title" className="form-control my-3 mb-5" />
+                            <input type="text"
+                            placeholder="Title"
+                            id="title"
+                            className="form-control my-3 mb-5"
+                            value={title}
+                            onChange={(event)=>setTitle(event.target.value)}
+                            />
                             {/* <textarea className="form-control" name="" id="" cols="30" rows="10" placeholder="Review itself"></textarea> */}
                             
                             <RichEditor/>
