@@ -2,7 +2,7 @@ const express = require('express')
 const path = require ('path')
 const corsMiddleware = require('./server/middleware/corsMiddleware')
 const authRouter = require('./server/Routers/authRouter/authRouter')
-const apiRouter = require('./server/Routers/apiRouter/apiRouter')
+// const apiRouter = require('./server/Routers/apiRouter/apiRouter')
 const {mySqlUri} = require('./server/config.json')
 
 // database
