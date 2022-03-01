@@ -48,7 +48,7 @@ export const AddReviewModal = () => {
                             />
                             {/* <textarea className="form-control" name="" id="" cols="30" rows="10" placeholder="Review itself"></textarea> */}
                             
-                            <RichEditor/>
+                            {/* <RichEditor/> */}
                             
                             <div className="text-light mt-5">
                                 <div className="stars" onClick={(event)=> setRating(event.target)}>
