@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, Component } from "react";
 import { DropZone } from "./DropZone";
 import RichEditor from "./RichEditor";
 import {publish} from "../../../api/publish"
+
 
 export const AddReviewModal = () => {
 
@@ -48,7 +49,7 @@ export const AddReviewModal = () => {
                             />
                             {/* <textarea className="form-control" name="" id="" cols="30" rows="10" placeholder="Review itself"></textarea> */}
                             
-                            {/* <RichEditor/> */}
+                            <RichEditor/>
                             
                             <div className="text-light mt-5">
                                 <div className="stars" onClick={(event)=> setRating(event.target)}>
