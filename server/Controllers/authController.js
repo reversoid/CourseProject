@@ -64,7 +64,8 @@ class authController{
     }
     async getPosts(req, res) {
         try {
-            const posts = await Post.findAll({order: [['created', 'DESC']], limit: 5})
+            // limit: 5
+            const posts = await Post.findAll({order: [['created', 'DESC']]})
             return res.json({posts, code: 0})
         } catch (e) {
             res.status(400).json({message: 'Error accessing to database', code: 1})
@@ -72,25 +73,25 @@ class authController{
     }
     async publish(req, res) {
         try {
+
             const {title, text, rating} = req.body
-            
-            const post = new Post({
+            let date = new Date()
+            date = date.toISOString().slice(0,19).replace('T', ' ')
+
+            const post = Post.create({
                 title,
                 text,
-                created: Date.now(),
+                created: date,
                 like_count: 0,
                 uid_fk: 1,
                 rating
             })
             
-            await post.save()
-
-            return res.json({message: 'Post has been published', code: 0, token})
-        } catch (e) {
-            res.status(400).json({message: 'Post publishing error', code: 1, e})
+            return res.json({message: 'Post has been published', code: 0})
+        } catch (error) {
+            res.status(400).json({message: 'Post publishing error', code: 1, error})
         }
     }
-    
 }
 
 module.exports = new authController()

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-// import draftToMarkdown from 'draftjs-to-markdown';
-// import FormattedOutput from './FormattedOutput';
+import draftToMarkdown from 'draftjs-to-markdown';
+import { markdownToDraft } from 'markdown-draft-js';
+
 
 export default class RichEditor extends Component {
   constructor(props) {
@@ -14,10 +15,17 @@ export default class RichEditor extends Component {
   }
 
   onEditorStateChange = (editorState) => {
+    this.props.setText(draftToMarkdown(convertToRaw(editorState.getCurrentContent())))
     this.setState({
       editorState
     });
+    // this.props.setText(editorState)
   };
+  // onEditorStateChange2 = (editorState) => {
+  //   console.log(draftToMarkdown(markdownToDraft(this.props.text))
+  // );
+    // this.props.setText(editorState)
+  // };
 
   render() {
     const { editorState } = this.state;
@@ -27,8 +35,8 @@ export default class RichEditor extends Component {
             toolbar={{
                 options: ['inline', 'list', 'textAlign', 'history'],
             }}
-    
-            initialEditorState={editorState}
+            // initialEditorState={editorState}
+            editorState = {editorState}
             onEditorStateChange={this.onEditorStateChange}
             />
         </>

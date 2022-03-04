@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { ReviewContentScore } from "./ReviewContentScore"
-
+import { markdownToDraft } from 'markdown-draft-js';
+import RichEditor from "../Page/RichEditor";
+import RichViewer from "./RichViewer";
 
 export const ReviewContent = (props) => {
 
@@ -21,8 +23,9 @@ export const ReviewContent = (props) => {
         let borderClass = "reviewContent "+ "px-5 "+ borderColor
         return (<div className={borderClass}>
             <h2 className="title text-center py-3 mb-0">{props.review.title}</h2>
-            <div className="description pb-3">
-                {props.review.text}
+            <div className="description pb-3 text-light">
+                <RichViewer text={props.review.text}/>
+               {/* {props.review.text} */}
             </div>
             {/* PICTURES HERE MAYBE CENTERED SLIDER */}
             <ReviewContentScore rating={props.review.rating} color={color} />

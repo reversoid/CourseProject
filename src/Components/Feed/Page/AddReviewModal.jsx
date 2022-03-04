@@ -3,7 +3,6 @@ import { DropZone } from "./DropZone";
 import RichEditor from "./RichEditor";
 import {publish} from "../../../api/publish"
 
-
 export const AddReviewModal = () => {
 
     const onDrop = useCallback(acceptedFiles => {
@@ -12,6 +11,7 @@ export const AddReviewModal = () => {
     }, []);
 
     let [rating, setUserRating] = useState(0)
+
     function setRating(target){
         if(!target.id)
             return
@@ -48,9 +48,12 @@ export const AddReviewModal = () => {
                             onChange={(event)=>setTitle(event.target.value)}
                             />
                             {/* <textarea className="form-control" name="" id="" cols="30" rows="10" placeholder="Review itself"></textarea> */}
-                            
-                            <RichEditor/>
-                            
+                            <div className="editor text-dark">
+                                <RichEditor setText={setText} text={text}/>
+                            </div>
+                            <div className="text-light">
+                                {text}
+                            </div>
                             <div className="text-light mt-5">
                                 <div className="stars" onClick={(event)=> setRating(event.target)}>
                                     <div className="star star-editable" id="one"></div>
@@ -59,7 +62,6 @@ export const AddReviewModal = () => {
                                     <div className="star star-editable" id="four"></div>
                                     <div className="star star-editable" id="five"></div>
                                 </div>
-                                
                                 <DropZone onDrop={onDrop} accept={"image/*"} />
                             </div>
                         </div>
@@ -68,7 +70,7 @@ export const AddReviewModal = () => {
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button"
                         className="btn btn-primary"
-                        onClick={()=>publish('1', '2', 5)}
+                        onClick={()=>publish(title, text, 5)}
                         >Publish</button>
                     </div>
                 </div>

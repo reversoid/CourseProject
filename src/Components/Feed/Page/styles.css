@@ -33,3 +33,7 @@ div.rdw-editor-toolbar{
 .star-editable{
     cursor: pointer;
 }
+.editor .DraftEditor-root{
+    background-color: #fff !important;
+    min-height: 100px;
+}

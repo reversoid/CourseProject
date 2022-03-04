@@ -91,3 +91,6 @@
 .border-excellent{
     border: 2px solid #00ff00;
 }
+.DraftEditor-root{
+    background-color: #212529 !important;
+}
