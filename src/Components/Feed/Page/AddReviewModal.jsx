@@ -1,7 +1,31 @@
-import React, { useCallback, useState, Component } from "react";
+import React, { useCallback, useState, Component, useEffect } from "react";
 import { DropZone } from "./DropZone";
 import RichEditor from "./RichEditor";
-import {publish} from "../../../api/publish"
+import { publish } from "../../../api/publish"
+
+
+function renderRating(rating, viewRating, setViewRating, numbers){
+
+    // this function renders rating based on logical rating
+
+    // make an empty array
+    viewRating = []
+
+    // pick color
+    let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
+    let color = colors[rating - 1]
+    
+    // classname for star
+    let starColor = "star star-editable " + color
+
+    for (let i = 0; i < rating; i++) {
+        viewRating.push(<div className={starColor} key={i} id={numbers[i]}></div>)
+    }
+    for (let i = 0; i < 5 - rating; i++) {
+        viewRating.push(<div className="star star-editable" key={rating + i} id={numbers[rating+i]}></div>)
+    }
+    setViewRating(viewRating)
+}
 
 export const AddReviewModal = () => {
 
@@ -10,25 +34,29 @@ export const AddReviewModal = () => {
         console.log(acceptedFiles);
     }, []);
 
+    // logical rating
     let [rating, setUserRating] = useState(0)
 
-    function setRating(target){
-        if(!target.id)
-            return
-        if(target.id === "one")
-            setUserRating(1)
-        else if (target.id === "two")
-            setUserRating(2)
-        else if (target.id === "three")
-            setUserRating(3)
-        else if (target.id === "four")
-            setUserRating(4)
-        else if (target.id === "five")
-            setUserRating(5)
-        }
+    // view rating
+    let [viewRating, setViewRating] = useState([])
+
     
-        let [title, setTitle] = useState('')
-        let [text, setText] = useState('')
+    useEffect(()=>{
+
+        renderRating(rating, viewRating, setViewRating, numbers)
+
+    }, [rating])
+
+    // numbers for id and logical rating
+    let numbers = ['one', 'two', 'three', 'four', 'five']
+
+    function setRating(target, numbers) {
+        if(target.id)
+            setUserRating(numbers.indexOf(target.id)+1)
+    }
+
+    let [title, setTitle] = useState('')
+    let [text, setText] = useState('')
 
     return (
         <div className="modal fade" id="addModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -41,26 +69,18 @@ export const AddReviewModal = () => {
                     <div className="modal-body">
                         <div className="container m-auto d-flex justify-content-center flex-column text-dark">
                             <input type="text"
-                            placeholder="Title"
-                            id="title"
-                            className="form-control my-3 mb-5"
-                            value={title}
-                            onChange={(event)=>setTitle(event.target.value)}
+                                placeholder="Title"
+                                id="title"
+                                className="form-control my-3"
+                                value={title}
+                                onChange={(event) => setTitle(event.target.value)}
                             />
-                            {/* <textarea className="form-control" name="" id="" cols="30" rows="10" placeholder="Review itself"></textarea> */}
                             <div className="editor text-dark">
-                                <RichEditor setText={setText} text={text}/>
-                            </div>
-                            <div className="text-light">
-                                {text}
+                                <RichEditor setText={setText} text={text} />
                             </div>
                             <div className="text-light mt-5">
-                                <div className="stars" onClick={(event)=> setRating(event.target)}>
-                                    <div className="star star-editable" id="one"></div>
-                                    <div className="star star-editable" id="two"></div>
-                                    <div className="star star-editable" id="three"></div>
-                                    <div className="star star-editable" id="four"></div>
-                                    <div className="star star-editable" id="five"></div>
+                                <div className="stars" onClick={(event) => setRating(event.target, numbers)}>
+                                    {viewRating}
                                 </div>
                                 <DropZone onDrop={onDrop} accept={"image/*"} />
                             </div>
@@ -69,8 +89,8 @@ export const AddReviewModal = () => {
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button"
-                        className="btn btn-primary"
-                        onClick={()=>publish(title, text, 5)}
+                            className="btn btn-primary"
+                            onClick={() => publish(title, text, rating)}
                         >Publish</button>
                     </div>
                 </div>

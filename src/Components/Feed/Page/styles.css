@@ -37,3 +37,27 @@ div.rdw-editor-toolbar{
     background-color: #fff !important;
     min-height: 100px;
 }
+.photo-add{
+    background-image: url('./img/photo-add.svg');
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+.photo-ondrop{
+    background-image: url('./img/photo-ondrop.svg');
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+.dropzone-content{
+    border: 3px dashed white;
+    border-radius: 10px;
+}
+.modal-header{
+    border-bottom: none;
+}
+.modal-footer{
+    border-top: none;
+}

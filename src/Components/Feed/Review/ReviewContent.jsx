@@ -7,18 +7,12 @@ import RichViewer from "./RichViewer";
 export const ReviewContent = (props) => {
 
     function getReview() {
-        let color
-        if (props.review.rating === 1)
-            color = ("very-bad")
-        else if (props.review.rating === 2)
-            color = ("bad")
-        else if (props.review.rating === 3)
-            color = ("satisfactory")
-        else if (props.review.rating === 4)
-            color = ("good")
-        else if (props.review.rating === 5)
-            color = ("excellent")
-
+        let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
+        let color = colors[props.review.rating - 1] || 'very-bad'
+       
+        let hoverTitle = color.charAt(0).toUpperCase() + color.slice(1)
+        hoverTitle = hoverTitle.replace('-', ' ')
+        
         let borderColor = "border-"+color
         let borderClass = "reviewContent "+ "px-5 "+ borderColor
         return (<div className={borderClass}>
@@ -28,7 +22,7 @@ export const ReviewContent = (props) => {
                {/* {props.review.text} */}
             </div>
             {/* PICTURES HERE MAYBE CENTERED SLIDER */}
-            <ReviewContentScore rating={props.review.rating} color={color} />
+            <ReviewContentScore rating={props.review.rating} color={color} hoverTitle={hoverTitle}/>
         </div>)
     }
 

@@ -92,6 +92,13 @@ class authController{
             res.status(400).json({message: 'Post publishing error', code: 1, error})
         }
     }
+    async like(req, res){
+        try {
+            const {post_id} = req.body
+        } catch (e) {
+            
+        }
+    }
 }
 
 module.exports = new authController()
