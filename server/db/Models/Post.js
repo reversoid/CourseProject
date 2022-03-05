@@ -28,7 +28,7 @@ const Post = sequelize.define('Post', {
         allowNull: false
     },
     created: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DATE,
         allowNull: false
     },
     rating: {

@@ -4,8 +4,8 @@ const { mySqlUri } = require('../../config.json')
 const sequelize = new Sequelize(mySqlUri)
 
 
-const Post_like = sequelize.define('post_like', {
-    like_id: {
+const Comment = sequelize.define('comment', {
+    comment_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
@@ -14,7 +14,6 @@ const Post_like = sequelize.define('post_like', {
     post_id_fk: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        
     },
     uid_fk: {
         type: DataTypes.INTEGER,
@@ -24,10 +23,13 @@ const Post_like = sequelize.define('post_like', {
     created: {
         type: DataTypes.DATE,
         allowNull: false,
-        
+    },
+    text: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 },
     { timestamps: false }
 )
 
-module.exports = Post_like
+module.exports = Comment

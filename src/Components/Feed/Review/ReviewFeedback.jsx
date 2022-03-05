@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { Comment } from "./Comment"
-
+import {like} from '../../../api/like'
 export const ReviewFeedback = () => {
     let [commentCollapsed, setCommentCollapsed] = useState(true)
     function toggleComment(){
         setCommentCollapsed(!commentCollapsed)
         console.log(commentCollapsed)
     }
+    let [likedState, setLikedState] = useState('like me-5')
     return (
         <>
             <div className="feedback-panel">
@@ -19,7 +20,9 @@ export const ReviewFeedback = () => {
 
                 <div className="like-panel">
                     <div className="likes-count me-3 fw-bold">999</div>
-                    <div className="like me-5"></div>
+                    <div className={likedState}
+                    onClick={(event)=>like(event.currentTarget.parentNode.parentNode.parentNode.id, setLikedState)}
+                    ></div>
                 </div>
             </div>
             
