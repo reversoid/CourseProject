@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken')
 const User = require('../db/Models/User')
 const Post = require('../db/Models/Post')
 const Post_like = require('../db/Models/Like')
+const Comment = require('../db/Models/Comment')
+const sequelize = require('sequelize')
+
 const { secret } = require('../config.json')
 
 const generateAcessToken = (id, username) => {
@@ -125,34 +128,41 @@ class authController {
     }
     async comment(req, res) {
         try {
-            const {post_id, text} = req.body
+            const { post_id, text } = req.body
 
             let date = new Date()
             date = date.toISOString().slice(0, 19).replace('T', ' ')
 
-            // console.log('what', await Post_like.findAll({where: {uid_fk: 1, post_id_fk: Number(post_id)}}))
-            const like_candidate = await Post_like.findOne({ where: { uid_fk: 1, post_id_fk: post_id } })
-            if (like_candidate) {
-                console.log(like_candidate)
-                like_candidate.destroy()
-                return res.json({ message: 'Unliked sucessfully', code: 0, status: 'unliked' })
-            }
-            else {
-                console.log(like_candidate)
-                // TODO REMOVE HARDCODE!!! (UID_FK)
-                const like = Post_like.create({
-                    post_id_fk: post_id,
-                    uid_fk: 1,
-                    created: date
-                })
-
-                return res.json({ message: 'Liked sucessfully', code: 0, status: 'liked' })
-            }
-
-
-
+            // TODO REMOVE HARDCODE!!! (UID_FK)
+            const comment = Comment.create({
+                post_id_fk: post_id,
+                uid_fk: 1,
+                created: date,
+                text: text
+            })
+            return res.json({ message: 'Commented sucessfully', code: 0 })
         } catch (e) {
-            return res.status(400).json({ message: 'Liked failed', code: 1, e })
+            return res.status(400).json({ message: 'Comment failed', code: 1, e })
+        }
+    }
+    async getComments(req, res) {
+        try {
+            const { post_id } = req.body
+
+            // const comments = await Comment.findAll({ where:{post_id_fk: post_id}, order: [['created', 'DESC']] })
+            // const comments = await sequelize.query()
+            const [comments, metadata] = await Comment.sequelize.query(`
+            select comment_id, post_id_fk, uid_fk, created, text, username
+            from comments
+                     join users u on u.id = comments.uid_fk
+            where post_id_fk = ${post_id}`)
+            
+            // console.log(comments);
+
+            // add column to result that shows username using mysql
+            return res.json({ message: 'Succesfully loaded comments', code: 0 , comments})
+        } catch (e) {
+            return res.status(400).json({ message: 'Comments loading failed', code: 1, e })
         }
     }
 }

@@ -7,7 +7,7 @@ import { AddReviewModal } from './AddReviewModal'
 import { DropZone } from './DropZone'
 import { getPosts } from '../../../api/getPosts'
 export const Feed = () => {
-    let [posts, setPosts] = useState([])
+    let [posts, setPosts] = useState(new Array)
 
     useEffect(()=>{
         getPosts().then((response)=>{setPosts(response)})

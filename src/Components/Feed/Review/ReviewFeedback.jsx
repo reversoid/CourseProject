@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from "react"
 import { Comment } from "./Comment"
 import {like} from '../../../api/like'
-export const ReviewFeedback = () => {
+import {comment} from '../../../api/comment'
+import {getComments} from '../../../api/getComments'
+
+
+export const ReviewFeedback = (props) => {
     let [commentCollapsed, setCommentCollapsed] = useState(true)
+    let [likedState, setLikedState] = useState('like me-5')
+    let [comments, setComments] = useState(new Array)
+
     function toggleComment(){
         setCommentCollapsed(!commentCollapsed)
         console.log(commentCollapsed)
     }
-    let [likedState, setLikedState] = useState('like me-5')
+    
+    useEffect(()=>{
+        getComments(props.post_id).then((response)=>{
+            setComments(response)
+        })
+    }, [])
     return (
         <>
             <div className="feedback-panel">
                 <div className="comments-panel">
                     <span className='fw-bold ms-5'>Comments&nbsp;</span>
-                    <span>(10)</span>
+                    <span>({comments.length})</span>
                     <div className={commentCollapsed?"down-arrow ms-3":"down-arrow ms-3 rotated"}
                     onClick={()=>toggleComment()}></div>
                 </div>
@@ -27,9 +39,11 @@ export const ReviewFeedback = () => {
             </div>
             
             <div className={commentCollapsed?"container px-5 collapsed":"container-lg px-5 mx-0"}>
-                <Comment/>
-                <Comment/>
+                {comments.map((comment, index)=>{return <Comment comment={comment} key={index+30}/>})}
             </div>
+            {/* <div className="comment-add text-dark">
+                    <textarea name="" id="" cols="30" rows="10"></textarea>
+            </div> */}
         </>
         
 

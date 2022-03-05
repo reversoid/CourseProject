@@ -8,6 +8,8 @@ router.post('/login', controller.login)
 router.post('/getPosts', controller.getPosts)
 router.post('/publish', controller.publish)
 router.post('/like', controller.like)
+router.post('/comment', controller.comment)
+router.post('/getComments', controller.getComments)
 
 
 module.exports = router
