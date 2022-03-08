@@ -59,12 +59,22 @@ class authController {
 
             // create jwt
             const token = generateAcessToken(candidate.getDataValue('id'), candidate.getDataValue('username'))
-            console.log(token)
-            return res.json({ message: 'Sucessful login', token: token, code: 0 })
+            // console.log(token)
+
+            return res.cookie("access_token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+            }).json({ message: 'Sucessful login', code: 0 })
 
         } catch (e) {
             res.status(400).json({ message: 'Login error', code: 1, e })
         }
+    }
+    async logout(req, res) {
+        return res
+            .clearCookie('access_token')
+            .status(200)
+            .json({message: 'Succesfully logged out'})
     }
     async getPosts(req, res) {
         try {
@@ -106,12 +116,20 @@ class authController {
             // console.log('what', await Post_like.findAll({where: {uid_fk: 1, post_id_fk: Number(post_id)}}))
             const like_candidate = await Post_like.findOne({ where: { uid_fk: 1, post_id_fk: post_id } })
             if (like_candidate) {
-                console.log(like_candidate)
+                //decrease amount of likes
+                const postToDecreaseLike = await Post.findOne({ where: { post_id: post_id } })
+                // console.log(postToDecreaseLike.getDataValue('like_count'));
+                postToDecreaseLike.setDataValue('like_count', Number(postToDecreaseLike.getDataValue('like_count')) - 1)
+                postToDecreaseLike.save()
+
                 like_candidate.destroy()
                 return res.json({ message: 'Unliked sucessfully', code: 0, status: 'unliked' })
             }
             else {
-                console.log(like_candidate)
+                const postToIncreaseLike = await Post.findOne({ where: { post_id: post_id } })
+                // console.log(postToDecreaseLike.getDataValue('like_count'));
+                postToIncreaseLike.setDataValue('like_count', Number(postToIncreaseLike.getDataValue('like_count')) + 1)
+                postToIncreaseLike.save()
                 // TODO REMOVE HARDCODE!!! (UID_FK)
                 const like = Post_like.create({
                     post_id_fk: post_id,
@@ -156,11 +174,11 @@ class authController {
             from comments
                      join users u on u.id = comments.uid_fk
             where post_id_fk = ${post_id}`)
-            
+
             // console.log(comments);
 
             // add column to result that shows username using mysql
-            return res.json({ message: 'Succesfully loaded comments', code: 0 , comments})
+            return res.json({ message: 'Succesfully loaded comments', code: 0, comments })
         } catch (e) {
             return res.status(400).json({ message: 'Comments loading failed', code: 1, e })
         }

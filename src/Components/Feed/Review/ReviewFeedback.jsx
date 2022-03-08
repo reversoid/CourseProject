@@ -9,7 +9,7 @@ export const ReviewFeedback = (props) => {
     let [commentCollapsed, setCommentCollapsed] = useState(true)
     let [likedState, setLikedState] = useState('like me-5')
     let [comments, setComments] = useState(new Array)
-
+    let [writeCommentValue, setWriteCommentValue] = useState('')
     function toggleComment(){
         setCommentCollapsed(!commentCollapsed)
         console.log(commentCollapsed)
@@ -31,7 +31,7 @@ export const ReviewFeedback = (props) => {
                 </div>
 
                 <div className="like-panel">
-                    <div className="likes-count me-3 fw-bold">999</div>
+                    <div className="likes-count me-3 fw-bold">{props.like_count}</div>
                     <div className={likedState}
                     onClick={(event)=>like(event.currentTarget.parentNode.parentNode.parentNode.id, setLikedState)}
                     ></div>
@@ -40,10 +40,23 @@ export const ReviewFeedback = (props) => {
             
             <div className={commentCollapsed?"container px-5 collapsed":"container-lg px-5 mx-0"}>
                 {comments.map((comment, index)=>{return <Comment comment={comment} key={index+30}/>})}
+                <div className="mt-4">
+                    <textarea className="form-control"
+                    name=""
+                    id=""
+                    placeholder="Add new comment"
+                    value={writeCommentValue}
+                    onChange={(event)=>setWriteCommentValue(event.target.value)}
+                    ></textarea>
+
+                    <button
+                    className="btn btn-primary mt-3"
+                    onClick={()=>comment(String(props.post_id), writeCommentValue, setWriteCommentValue)}
+                    >Post</button>
+                </div>
+                
             </div>
-            {/* <div className="comment-add text-dark">
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-            </div> */}
+             
         </>
         
 

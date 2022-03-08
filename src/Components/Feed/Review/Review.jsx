@@ -8,6 +8,6 @@ export const Review = (props) => {
     
     <div className="review-container mb-5" id={"post-"+props.post.post_id}>
       <ReviewContent review={props.post}/>
-      <ReviewFeedback post_id={props.post.post_id}/>
+      <ReviewFeedback post_id={props.post.post_id} like_count={props.post.like_count}/>
     </div>)
 }
