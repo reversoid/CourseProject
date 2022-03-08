@@ -15,7 +15,6 @@ export const AuthModal = () => {
     function showInfo(response){
         if(response.code===0){
             setInfo(<div className="text-success mt-2">Success</div>)
-
         }
         else{
             setInfo(<div className="text-danger mt-2">{response.message}</div>)

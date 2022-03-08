@@ -8,6 +8,7 @@ const Comment = require('../db/Models/Comment')
 const sequelize = require('sequelize')
 
 const { secret } = require('../config.json')
+const cookieParser = require('cookie-parser')
 
 const generateAcessToken = (id, username) => {
     const payload = {
@@ -60,10 +61,11 @@ class authController {
             // create jwt
             const token = generateAcessToken(candidate.getDataValue('id'), candidate.getDataValue('username'))
             // console.log(token)
-
+            
             return res.cookie("access_token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
+                maxAge: 1000 * 60 * 60 * 48,
             }).json({ message: 'Sucessful login', code: 0 })
 
         } catch (e) {
@@ -74,7 +76,10 @@ class authController {
         return res
             .clearCookie('access_token')
             .status(200)
-            .json({message: 'Succesfully logged out'})
+            .json({ message: 'Succesfully logged out' })
+    }
+    async protected(req, res) {
+        return res.json({ user: { id: req.userId, username: req.username } });
     }
     async getPosts(req, res) {
         try {

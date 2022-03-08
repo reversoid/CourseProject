@@ -1,8 +1,12 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { AuthModal } from "./AuthModal"
+import {getCurrentUserData} from '../../api/getCurrentUserData'
 import './styles.css'
 
 export const Navigation = () => {
+    // useEffect(()=>{
+    //     getCurrentUserData()
+    // })
     return (
         <nav className='container-xxl bg-dark'>
             <div className="logo" />
@@ -15,7 +19,7 @@ export const Navigation = () => {
             </div>
 
             {/* MODAL BUTTON */}
-            <button className='btn btn-primary' data-bs-toggle="modal" data-bs-target="#authModal">Sign in</button>
+            <button className='btn btn-primary' onClick={()=>getCurrentUserData()} data-bs-toggle="modal" data-bs-target="#authModal">Sign in</button>
             <AuthModal/>
         </nav>
     )
