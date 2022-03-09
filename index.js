@@ -4,7 +4,7 @@ const corsMiddleware = require('./server/middleware/corsMiddleware')
 const authRouter = require('./server/Routers/authRouter/authRouter')
 // const apiRouter = require('./server/Routers/apiRouter/apiRouter')
 const {mySqlUri} = require('./server/config.json')
-
+const cors = require('cors')
 const cookieParser = require("cookie-parser");
 // database
 const { Sequelize, DataTypes } = require('sequelize');
@@ -24,9 +24,10 @@ app.use(express.static(path.resolve(__dirname, 'build')))
 app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname,  "build", "index.html"))
 })
-
+const {myUrl} = require('./server/config.json')
+app.use(cors({credentials:true, origin: myUrl}))
 app.use(cookieParser());
-app.use(corsMiddleware)
+// app.use(corsMiddleware)
 app.use(express.json())
 app.use('/api/auth', authRouter)
 

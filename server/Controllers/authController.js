@@ -66,6 +66,7 @@ class authController {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 maxAge: 1000 * 60 * 60 * 48,
+                sameSite: 'Strict'
             }).json({ message: 'Sucessful login', code: 0 })
 
         } catch (e) {

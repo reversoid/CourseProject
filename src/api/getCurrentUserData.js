@@ -3,7 +3,7 @@ import config from '../config.json'
 
 export const getCurrentUserData = async () => {
     try {
-        const response = await axios.post(config.myUrl+'/api/auth/protected', {})
+        const response = await axios.post(config.myUrl+'/api/auth/protected', {}, {withCredentials: true})
         console.log(response);
         return response
     } catch (e) {
