@@ -1,12 +1,23 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { AuthModal } from "./AuthModal"
 import {getCurrentUserData} from '../../api/getCurrentUserData'
 import './styles.css'
 
 export const Navigation = () => {
-    // useEffect(()=>{
-    //     getCurrentUserData()
-    // })
+    const [profileArea, setProfileArea] = useState(<button className='btn btn-primary' data-bs-toggle="modal" data-bs-target="#authModal">Sign in</button>)
+    useEffect(()=>{
+        getCurrentUserData().then((res)=>{
+            if(res){
+                setProfileArea(
+                <div className="profile-link">
+                    <div className="profile-img me-2"></div>
+                    <div className="me-2">
+                        {res}
+                    </div>
+                </div>)
+            }
+        })
+    }, [])
     return (
         <nav className='container-xxl bg-dark'>
             <div className="logo" />
@@ -18,9 +29,12 @@ export const Navigation = () => {
                 <span className="category-item fs-5">All</span>
             </div>
 
-            {/* MODAL BUTTON */}
-            <button className='btn btn-primary' onClick={()=>getCurrentUserData()} data-bs-toggle="modal" data-bs-target="#authModal">Sign in</button>
-            <AuthModal/>
+            {/* MODAL BUTTON OR PROFILE LINK*/}
+            <div className="text-light">
+                {profileArea}
+                <AuthModal/>
+            </div>
+            
         </nav>
     )
 }
