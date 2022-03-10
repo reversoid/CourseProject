@@ -3,12 +3,14 @@ import { Comment } from "./Comment"
 import {like} from '../../../api/like'
 import {comment} from '../../../api/comment'
 import {getComments} from '../../../api/getComments'
+import {getCurrentUserData} from '../../../api/getCurrentUserData'
+
 
 
 export const ReviewFeedback = (props) => {
     let [commentCollapsed, setCommentCollapsed] = useState(true)
     let [likedState, setLikedState] = useState('like me-5')
-    let [comments, setComments] = useState(new Array)
+    let [comments, setComments] = useState(new Array())
     let [writeCommentValue, setWriteCommentValue] = useState('')
     function toggleComment(){
         setCommentCollapsed(!commentCollapsed)
@@ -51,7 +53,7 @@ export const ReviewFeedback = (props) => {
 
                     <button
                     className="btn btn-primary mt-3"
-                    onClick={()=>comment(String(props.post_id), writeCommentValue, setWriteCommentValue)}
+                    onClick={()=>comment(props.currentId, String(props.post_id), writeCommentValue, setWriteCommentValue)}
                     >Post</button>
                 </div>
                 

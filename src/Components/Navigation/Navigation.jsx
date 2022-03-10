@@ -12,7 +12,7 @@ export const Navigation = () => {
                 <div className="profile-link">
                     <div className="profile-img me-2"></div>
                     <div className="me-2">
-                        {res}
+                        {res.username}
                     </div>
                 </div>)
             }

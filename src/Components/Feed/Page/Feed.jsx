@@ -6,10 +6,13 @@ import './styles.css'
 import { AddReviewModal } from './AddReviewModal'
 import { DropZone } from './DropZone'
 import { getPosts } from '../../../api/getPosts'
-export const Feed = () => {
-    let [posts, setPosts] = useState(new Array)
+import { getCurrentUserData } from '../../../api/getCurrentUserData'
 
+export const Feed = () => {
+    let [posts, setPosts] = useState(new Array())
+    const [id, setId] = useState(1)
     useEffect(()=>{
+        getCurrentUserData().then((response)=>{setId(response.id)})
         getPosts().then((response)=>{setPosts(response)})
     }, [])
     return (
@@ -24,8 +27,7 @@ export const Feed = () => {
 
                 <div className="row">
                     <div className="col-md-12 col-lg-9">
-                        {/* Make for loop */}
-                        {posts.map((post, index) => {return <Review post={post} key={index}/>})}                        
+                        {posts.map((post, index) => {return <Review post={post} key={index} currentId={id}/>})}                        
                     </div>
                     <div className="col-lg-3 d-none d-lg-block">
                         <Filter />

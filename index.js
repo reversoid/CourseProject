@@ -25,7 +25,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname,  "build", "index.html"))
 })
 const {myUrl} = require('./server/config.json')
-app.use(cors({credentials:true, origin: myUrl}))
+app.use(cors({credentials:true, origin: [myUrl, new RegExp(`\\^${myUrl}`)]}))
 app.use(cookieParser());
 // app.use(corsMiddleware)
 app.use(express.json())
