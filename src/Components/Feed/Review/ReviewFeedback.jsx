@@ -12,6 +12,7 @@ export const ReviewFeedback = (props) => {
     let [likedState, setLikedState] = useState('like me-5')
     let [comments, setComments] = useState(new Array())
     let [writeCommentValue, setWriteCommentValue] = useState('')
+    let [likeCount, setLikeCount] = useState(props.like_count)
     function toggleComment(){
         setCommentCollapsed(!commentCollapsed)
         console.log(commentCollapsed)
@@ -33,9 +34,9 @@ export const ReviewFeedback = (props) => {
                 </div>
 
                 <div className="like-panel">
-                    <div className="likes-count me-3 fw-bold">{props.like_count}</div>
+                    <div className="likes-count me-3 fw-bold">{likeCount}</div>
                     <div className={likedState}
-                    onClick={(event)=>like(event.currentTarget.parentNode.parentNode.parentNode.id, setLikedState)}
+                    onClick={(event)=>like(event.currentTarget.parentNode.parentNode.parentNode.id, likedState, setLikedState, likeCount, setLikeCount)}
                     ></div>
                 </div>
             </div>

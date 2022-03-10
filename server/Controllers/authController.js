@@ -135,14 +135,32 @@ class authController {
         `)
 
         result.push(profilePosts)
-        return res.json({profileInfo: profileInfo[0][0], profilePosts: profilePosts[0]})
+        return res.json({ profileInfo: profileInfo[0][0], profilePosts: profilePosts[0] })
 
         // Promise.all([getProfileInfo(result), getProfilePosts(result)]).then(()=>{return res.json({result})})
     }
     async getPosts(req, res) {
         try {
+            const { id } = req.body
+            const { Op } = require("sequelize");
             // limit: 5
             const posts = await Post.findAll({ order: [['created', 'DESC']] })
+
+            // posts = posts.map((post) => {
+            //     post.setDataValue('isLiked', Boolean(await Post_like.findOne({
+            //         where: {
+            //             [Op.and]: [
+            //                 { post_id_fk: post.post_id },
+            //                 { uid_fk: id }
+            //             ]
+            //         }
+            //     }))) 
+            //     console.log(post);
+
+                
+            // })
+            // await Promise.all(posts)
+            // console.log('got all!');
             return res.json({ posts, code: 0 })
         } catch (e) {
             res.status(400).json({ message: 'Error accessing to database', code: 1 })

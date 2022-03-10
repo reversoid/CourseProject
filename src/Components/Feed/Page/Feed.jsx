@@ -9,7 +9,7 @@ import { getPosts } from '../../../api/getPosts'
 import { getCurrentUserData } from '../../../api/getCurrentUserData'
 
 export const Feed = () => {
-    let [posts, setPosts] = useState(new Array())
+    let [posts, setPosts] = useState([])
     const [id, setId] = useState(1)
     useEffect(()=>{
         getCurrentUserData().then((response)=>{setId(response.id)})
