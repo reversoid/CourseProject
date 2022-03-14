@@ -140,25 +140,33 @@ class authController {
         // Promise.all([getProfileInfo(result), getProfilePosts(result)]).then(()=>{return res.json({result})})
     }
     async getPosts(req, res) {
+        const { Op } = require("sequelize");
+        async function setIsLiked(posts, id = 0) {
+            // const myLikes =  await Post_like.findAll({
+            //     where:{
+            //         uid_fk: id
+            //     }})
+            posts.map((post) => {
+                // Post_like.findOne({where:{
+                //     [Op.and]: [
+                //         {uid_fk: id},
+                //         {post_id_fk: post.getDataValue('post_id')}
+                //     ]}
+                // }).then((isLiked)=>{post.setDataValue('isLiked', Boolean(isLiked)); })
+                
+                // console.log('here');
+                
+            })
+        }
         try {
-            const { id } = req.body
-            const { Op } = require("sequelize");
+            const { id } = req.body || 0
+
             // limit: 5
             const posts = await Post.findAll({ order: [['created', 'DESC']] })
+            // const allLikes = await Post_like.findAll({where: {uid_fk: id}})
+            // console.log(allLikes.filter(like => (like.getDataValue('post_id_fk'))))
 
-            // posts = posts.map((post) => {
-            //     post.setDataValue('isLiked', Boolean(await Post_like.findOne({
-            //         where: {
-            //             [Op.and]: [
-            //                 { post_id_fk: post.post_id },
-            //                 { uid_fk: id }
-            //             ]
-            //         }
-            //     }))) 
-            //     console.log(post);
-
-                
-            // })
+            setIsLiked(posts, id)
             // await Promise.all(posts)
             // console.log('got all!');
             return res.json({ posts, code: 0 })

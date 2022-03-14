@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
 
 export const ReviewContentScore = (props) => {
-    let [rating, setRating] = useState([])
+    let [rating, setRating] = useState(new Array())
     function getRating(){
         let starColor = "star " + props.color
-        //get title
         for (let i = 0; i < props.rating; i++) {
             rating.push(<div className={starColor} key={i}></div>)
         }

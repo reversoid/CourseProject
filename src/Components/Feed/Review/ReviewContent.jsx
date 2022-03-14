@@ -3,6 +3,7 @@ import { ReviewContentScore } from "./ReviewContentScore"
 import { markdownToDraft } from 'markdown-draft-js';
 import RichEditor from "../Page/RichEditor";
 import RichViewer from "./RichViewer";
+import { Tag } from "./Tag";
 
 export const ReviewContent = (props) => {
 
@@ -23,6 +24,9 @@ export const ReviewContent = (props) => {
             </div>
             {/* PICTURES HERE MAYBE CENTERED SLIDER */}
             <ReviewContentScore rating={props.review.rating} color={color} hoverTitle={hoverTitle}/>
+            <div className="tags mb-3">
+                <Tag tag={'hehehe1'}/>
+            </div>
         </div>)
     }
 

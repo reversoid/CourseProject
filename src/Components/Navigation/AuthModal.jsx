@@ -24,12 +24,12 @@ export const AuthModal = () => {
     return (
         <div className="modal fade" id="authModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
-                <div className="modal-content">
+                <div className="modal-content bg-dark">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Authorization</h5>
+                        <h5 className="modal-title text-light" id="exampleModalLabel">Authorization</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div className="modal-body">
+                    <div className="modal-body text-light">
                         <div className="login-form">
                             <label htmlFor="form" className="mb-3">Login or create a new account</label>
                             <form id="form">

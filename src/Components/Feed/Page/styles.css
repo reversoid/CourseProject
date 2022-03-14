@@ -28,7 +28,13 @@ div.rdw-editor-toolbar{
     border-radius: 4px;
 }
 .stars{
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    
+}
+.rating-and-tags{
+    display: flex;
+    align-items: center;
 }
 .star-editable{
     cursor: pointer;
@@ -36,6 +42,9 @@ div.rdw-editor-toolbar{
 .editor .DraftEditor-root{
     background-color: #fff !important;
     min-height: 100px;
+}
+.editor .DraftEditor-root{
+    cursor: text;
 }
 .photo-add{
     background-image: url('./img/photo-add.svg');
@@ -60,4 +69,12 @@ div.rdw-editor-toolbar{
 }
 .modal-footer{
     border-top: none;
+}
+.set-tag{
+    width: 170px;
+}
+@media screen and (max-width:400px) {
+    .set-tag{
+        width: 100%;
+    }
 }

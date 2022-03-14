@@ -2,9 +2,10 @@ import React, { useCallback, useState, Component, useEffect } from "react";
 import { DropZone } from "./DropZone";
 import RichEditor from "./RichEditor";
 import { publish } from "../../../api/publish"
+import { Tag } from "../Review/Tag";
 
 
-function renderRating(rating, viewRating, setViewRating, numbers){
+function renderRating(rating, viewRating, setViewRating, numbers) {
 
     // this function renders rating based on logical rating
 
@@ -14,7 +15,7 @@ function renderRating(rating, viewRating, setViewRating, numbers){
     // pick color
     let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
     let color = colors[rating - 1]
-    
+
     // classname for star
     let starColor = "star star-editable " + color
 
@@ -22,7 +23,7 @@ function renderRating(rating, viewRating, setViewRating, numbers){
         viewRating.push(<div className={starColor} key={i} id={numbers[i]}></div>)
     }
     for (let i = 0; i < 5 - rating; i++) {
-        viewRating.push(<div className="star star-editable" key={rating + i} id={numbers[rating+i]}></div>)
+        viewRating.push(<div className="star star-editable" key={rating + i} id={numbers[rating + i]}></div>)
     }
     setViewRating(viewRating)
 }
@@ -40,8 +41,8 @@ export const AddReviewModal = () => {
     // view rating
     let [viewRating, setViewRating] = useState([])
 
-    
-    useEffect(()=>{
+
+    useEffect(() => {
 
         renderRating(rating, viewRating, setViewRating, numbers)
 
@@ -51,8 +52,8 @@ export const AddReviewModal = () => {
     let numbers = ['one', 'two', 'three', 'four', 'five']
 
     function setRating(target, numbers) {
-        if(target.id)
-            setUserRating(numbers.indexOf(target.id)+1)
+        if (target.id)
+            setUserRating(numbers.indexOf(target.id) + 1)
     }
 
     let [title, setTitle] = useState('')
@@ -63,7 +64,7 @@ export const AddReviewModal = () => {
             <div className="modal-dialog modal-fullscreen">
                 <div className="modal-content bg-dark">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Add new review</h5>
+                        <h1 className="modal-title" id="exampleModalLabel">Add new review</h1>
                         <button type="button" className="btn-close bg-light " data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
@@ -79,9 +80,21 @@ export const AddReviewModal = () => {
                                 <RichEditor setText={setText} text={text} />
                             </div>
                             <div className="text-light mt-5">
-                                <div className="stars" onClick={(event) => setRating(event.target, numbers)}>
+                                <div className="stars me-3" onClick={(event) => setRating(event.target, numbers)}>
                                     {viewRating}
                                 </div>
+
+                                <div className="d-block mt-3 mb-4">
+                                    <div className="tag bg-warning set-tag me-3"><input type="text" className="form-control bg-warning shadow-none border-0" placeholder="Add a tag" /></div>
+                                    <Tag tag={'hello'}/>
+                                    <Tag tag={'hello'}/>
+                                    <Tag tag={'hello'}/>
+                                    <Tag tag={'hello'}/>
+                                    <Tag tag={'hello'}/>
+                                    <Tag tag={'hello'}/>
+                                    <Tag tag={'hello'}/>
+                                </div>
+
                                 <DropZone onDrop={onDrop} accept={"image/*"} />
                             </div>
                         </div>
