@@ -14,6 +14,8 @@ router.post('/publish', [Authorization], controller.publish)
 router.post('/like', [Authorization], controller.like)
 router.post('/comment', [Authorization], controller.comment)
 router.post('/getComments', controller.getComments)
+router.post('/getTags', controller.getTags)
+
 
 
 module.exports = router

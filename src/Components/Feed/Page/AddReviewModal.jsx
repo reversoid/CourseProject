@@ -56,8 +56,11 @@ export const AddReviewModal = () => {
             setUserRating(numbers.indexOf(target.id) + 1)
     }
 
-    let [title, setTitle] = useState('')
-    let [text, setText] = useState('')
+    const [title, setTitle] = useState('')
+    const [text, setText] = useState('')
+
+    const [tags, setTags] = useState(new Array())
+    let [inputTag, setInputTag] = useState('')
 
     return (
         <div className="modal fade" id="addModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,14 +88,40 @@ export const AddReviewModal = () => {
                                 </div>
 
                                 <div className="d-block mt-3 mb-4">
-                                    <div className="tag bg-warning set-tag me-3"><input type="text" className="form-control bg-warning shadow-none border-0" placeholder="Add a tag" /></div>
-                                    <Tag tag={'hello'}/>
-                                    <Tag tag={'hello'}/>
-                                    <Tag tag={'hello'}/>
-                                    <Tag tag={'hello'}/>
-                                    <Tag tag={'hello'}/>
-                                    <Tag tag={'hello'}/>
-                                    <Tag tag={'hello'}/>
+                                    <div className="tag bg-warning set-tag me-3 mb-2">
+
+                                        <form className="d-inline-block"
+                                            onSubmit={(event) => {
+                                                inputTag = inputTag.trim()
+                                                if (!inputTag.trim() || inputTag.includes('#') || inputTag.includes(' ')) {
+                                                    alert('Tag must not be empty, not contain "#" and whitespaces')
+                                                    event.preventDefault()
+                                                    return
+                                                }
+
+                                                tags.push(inputTag)
+                                                setTags(tags)
+                                                setInputTag('')
+                                                event.preventDefault()
+
+                                            }}>
+                                            <input type="text"
+                                                className="form-control bg-warning shadow-none border-0"
+                                                placeholder="Add a tag"
+                                                value={inputTag}
+                                                onChange={(event) => {
+                                                    setInputTag(event.target.value)
+                                                }}
+                                            />
+                                        </form>
+
+                                    </div>
+
+                                    {
+                                        tags ? tags.map((tag, index) => <Tag tag={tag} key={index + 100} />) : ''
+                                    }
+
+
                                 </div>
 
                                 <DropZone onDrop={onDrop} accept={"image/*"} />
@@ -103,7 +132,7 @@ export const AddReviewModal = () => {
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button"
                             className="btn btn-primary"
-                            onClick={() => publish(title, text, rating)}
+                            onClick={() => publish(title, text, rating, tags)}
                         >Publish</button>
                     </div>
                 </div>

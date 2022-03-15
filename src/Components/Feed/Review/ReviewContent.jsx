@@ -4,9 +4,11 @@ import { markdownToDraft } from 'markdown-draft-js';
 import RichEditor from "../Page/RichEditor";
 import RichViewer from "./RichViewer";
 import { Tag } from "./Tag";
+import {getTags} from '../../../api/getTags'
 
 export const ReviewContent = (props) => {
 
+    
     function getReview() {
         let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
         let color = colors[props.review.rating - 1] || 'very-bad'
@@ -25,12 +27,19 @@ export const ReviewContent = (props) => {
             {/* PICTURES HERE MAYBE CENTERED SLIDER */}
             <ReviewContentScore rating={props.review.rating} color={color} hoverTitle={hoverTitle}/>
             <div className="tags mb-3">
-                <Tag tag={'hehehe1'}/>
+                {tags.map((tag, index)=>{return <Tag tag={tag.text} key={index + 10000}/>})}
+                {/* <Tag tag={'hehehe1'}/> */}
             </div>
         </div>)
     }
 
+    const [tags, setTags] = useState(new Array())
+    useEffect(()=>{
+        getTags(props.review.post_id).then((tags)=>setTags(tags));
+    }, [])
+
     return (
+        
         getReview()
     )
 }
