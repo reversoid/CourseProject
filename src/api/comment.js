@@ -9,7 +9,6 @@ export const comment = async (from_id, post_id, text, setWriteCommentValue) => {
             text: text,
             from_id: from_id
         }, {withCredentials: true})
-        console.log(response.data);
     } catch (e) {
         
     }

@@ -5,9 +5,7 @@ export const getPosts = async () => {
     try {
         const response = await axios.post(config.myUrl+'/api/auth/getPosts', {id: 1})
         
-        console.log(response.data.posts)
         return response.data.posts
     } catch (e) {
-        console.log(e.response)
     }
 }

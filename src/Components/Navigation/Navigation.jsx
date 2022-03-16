@@ -21,7 +21,7 @@ export const Navigation = () => {
     return (
         <nav className='container-xxl bg-dark'>
             <div className="logo" />
-            <input type="text" className='form-control search' placeholder='Search for reviews' />
+            <input type="text" className='form-control search shadow-none' placeholder='Search for reviews' />
             <div className='text-light'>
                 <span className="category-item fs-5">Films</span>
                 <span className="category-item fs-5">Games</span>

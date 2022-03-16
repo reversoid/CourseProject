@@ -73,6 +73,14 @@ div.rdw-editor-toolbar{
 .set-tag{
     width: 170px;
 }
+.input-rating{
+    border: none;
+    outline: none;
+}
+.input-rating:focus{
+    border: none;
+    outline: none;
+}
 @media screen and (max-width:400px) {
     .set-tag{
         width: 100%;

@@ -7,6 +7,5 @@ export const getComments = async (post_id) => {
         
         return response.data.comments
     } catch (e) {
-        console.log(e.response)
     }
 }

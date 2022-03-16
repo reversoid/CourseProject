@@ -235,12 +235,25 @@ class authController {
             } = req.body || 0
 
             // limit: 5
-            const posts = await Post.findAll({
-                order: [
-                    ['created', 'DESC']
-                ]
+            // const posts = await Post.findAll({
+            //     order: [
+            //         ['created', 'DESC']
+            //     ]
                 
-            })
+            // })
+            const [posts, metadata] = await Post.sequelize.query(`
+                select post_id,
+                    title,
+                    text,
+                    like_count,
+                    uid_fk,
+                    rating,
+                    created,
+                    username
+                from posts
+                        join users u on u.id = posts.uid_fk
+                order by created DESC
+            `)
             // const allLikes = await Post_like.findAll({where: {uid_fk: id}})
             // console.log(allLikes.filter(like => (like.getDataValue('post_id_fk'))))
 

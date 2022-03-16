@@ -12,6 +12,5 @@ export const publish = async (title, text, rating, tags) => {
         
         return response
     } catch (e) {
-        console.log(e.response)
     }
 }

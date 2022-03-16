@@ -5,28 +5,7 @@ import { publish } from "../../../api/publish"
 import { Tag } from "../Review/Tag";
 
 
-function renderRating(rating, viewRating, setViewRating, numbers) {
 
-    // this function renders rating based on logical rating
-
-    // make an empty array
-    viewRating = []
-
-    // pick color
-    let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
-    let color = colors[rating - 1]
-
-    // classname for star
-    let starColor = "star star-editable " + color
-
-    for (let i = 0; i < rating; i++) {
-        viewRating.push(<div className={starColor} key={i} id={numbers[i]}></div>)
-    }
-    for (let i = 0; i < 5 - rating; i++) {
-        viewRating.push(<div className="star star-editable" key={rating + i} id={numbers[rating + i]}></div>)
-    }
-    setViewRating(viewRating)
-}
 
 export const AddReviewModal = () => {
 
@@ -37,30 +16,37 @@ export const AddReviewModal = () => {
 
     // logical rating
     let [rating, setUserRating] = useState(0)
-
     // view rating
-    let [viewRating, setViewRating] = useState([])
+    let [viewRating, setViewRating] = useState('')
 
 
     useEffect(() => {
-
-        renderRating(rating, viewRating, setViewRating, numbers)
-
+        renderRating(rating, viewRating, setViewRating)
     }, [rating])
 
-    // numbers for id and logical rating
-    let numbers = ['one', 'two', 'three', 'four', 'five']
-
-    function setRating(target, numbers) {
-        if (target.id)
-            setUserRating(numbers.indexOf(target.id) + 1)
-    }
+    
+   
 
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
 
     const [tags, setTags] = useState(new Array())
     let [inputTag, setInputTag] = useState('')
+
+
+
+    function renderRating(rating, viewRating, setViewRating) {
+
+        // this function renders rating based on logical rating
+        setUserRating(rating)
+        let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
+        let color 
+        
+        color = colors[rating - 1]
+    
+        viewRating = 'rating rating-' + color
+        setViewRating(viewRating)
+    }
 
     return (
         <div className="modal fade" id="addModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -83,10 +69,17 @@ export const AddReviewModal = () => {
                                 <RichEditor setText={setText} text={text} />
                             </div>
                             <div className="text-light mt-5">
-                                <div className="stars me-3" onClick={(event) => setRating(event.target, numbers)}>
-                                    {viewRating}
+                                <div className="d-inline-flex flex-column align-items-center justify-content-center">
+                                    <input style={{color: '#212529'}}
+                                    type="text"
+                                    className={"rating fs-2 text-center input-rating m-0 p-0"+viewRating}
+                                    maxLength={1}
+                                    minLength={1}
+                                    onChange={(event)=>{
+                                        renderRating(event.target.value, viewRating, setViewRating)
+                                    }}/>
+                                    <span className="text-secondary mt-1">Your score</span>
                                 </div>
-
                                 <div className="d-block mt-3 mb-4">
                                     <div className="tag bg-warning set-tag me-3 mb-2">
 
