@@ -197,6 +197,17 @@ class authController {
 
         // Promise.all([getProfileInfo(result), getProfilePosts(result)]).then(()=>{return res.json({result})})
     }
+    async getUsernameById(req, res){
+        try {
+            // const {id} = req.body
+            // const username = await User.findOne({where:{
+            //     id
+            // }})
+            return res.json({id})
+        } catch (error) {
+            return res.status(500).json({message: 'Error finding user'})
+        }
+    }
     async getPosts(req, res) {
         const {
             Op
@@ -228,6 +239,7 @@ class authController {
                 order: [
                     ['created', 'DESC']
                 ]
+                
             })
             // const allLikes = await Post_like.findAll({where: {uid_fk: id}})
             // console.log(allLikes.filter(like => (like.getDataValue('post_id_fk'))))
