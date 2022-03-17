@@ -81,6 +81,11 @@ div.rdw-editor-toolbar{
     border: none;
     outline: none;
 }
+
+
+
+
+
 @media screen and (max-width:400px) {
     .set-tag{
         width: 100%;

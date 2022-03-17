@@ -14,17 +14,28 @@ export const Filter = () => {
                 <div action="" className="d-flex flex-column" onSubmit={(e)=>{
                     e.preventDefault()
                 }}>
-
-                    {/* CATEGORY SECTION */}
-                    {/* MUST LOAD CATEGORIES FROM DB TO BE GOOD CODE*/}
-                    <div className="">
-                    <input className="w-100 form-control shadow-none mb-2 px-1" list="categoryOptions" id="" placeholder="Category"/>
-                        <datalist id="categoryOptions">
-                            <option value="Books"/>
-                            <option value="Films"/>
-                            <option value="Games"/>
-                            <option value="Music"/>
-                        </datalist>
+                    <label htmlFor="form-check" className="text-primary ms-2">Category</label>
+                    <div className="form-check mt-1 mb-3" id="form-check">
+                        <div className="d-block">
+                            <label htmlFor="films">Films</label>
+                            <input type="checkbox" className="form-check-input mx-1 shadow-none" id="films"/>
+                        </div>
+                        
+                        <div className="d-block">
+                            <label htmlFor="games">Games</label>
+                            <input type="checkbox" className="form-check-input mx-1 shadow-none" id="games"/>
+                        </div>
+                        
+                        <div className="d-block">
+                            <label htmlFor="books">Books</label>
+                            <input type="checkbox" className="form-check-input mx-1 shadow-none" id="books"/>
+                        </div>
+                        
+                        <div className="d-block">
+                            <label htmlFor="music">Music</label>
+                            <input type="checkbox" className="form-check-input mx-1 shadow-none" id="films"/>
+                        </div>
+                        
                     </div>
 
 
@@ -39,6 +50,7 @@ export const Filter = () => {
                         <input type="date" name="" id="dateTo" className="form-control bg-dark text-light border-0 ps-2 shadow-none"/>
                     </div>
                     <form action=""
+                        className="d-flex align-items-center justify-content-center"
                         onSubmit={(event) => {
                             tag = tag.trim()
                             if (!tag.trim() || tag.includes('#') || tag.includes(' ')) {
@@ -54,10 +66,11 @@ export const Filter = () => {
 
                         }}
                     >
-                        <div className="tag bg-warning set-tag me-3 mb-2">
+
+                        <div className="tag bg-warning set-tag my-2">
                             <input type="text"
                             name=""
-                            id=""
+                            id="tagInput"
                             className="form-control bg-warning shadow-none border-0"
                             placeholder="Write a tag"
                             value={tag}
@@ -65,15 +78,22 @@ export const Filter = () => {
                             />
                         </div>
                     </form>
-                    <div className="d-flex flex-direction-row" style={{'flex-wrap':'wrap'}}>
-                        {tags ? tags.map((tag, index) => <Tag tag={tag} key={index + 10000} />) : ''}
+                    <div className="d-flex flex-direction-row mx-2 mb-2 mt-1" style={{'flexWrap':'wrap', 'overflowX': 'auto'}}>
+                        {tags ? tags.map((tag, index) => <Tag tag={tag} key={index + 10000} id={index+10000} tags={tags} setTags={setTags}/>) : ''}
 
                     </div>
                     
+                    {/* <select className="form-select shadow-none" aria-label="Default select example">
+                        <option selected>Upscending</option>
+                        <option value="1"></option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select> */}
 
                 </div>
-                
-               
+                <div className="d-flex justify-content-center">
+                    <button className="btn btn-primary my-3 shadow-none">Применить</button>
+                </div>
             </div>
         </div>
     )

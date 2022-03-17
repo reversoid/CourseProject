@@ -1,11 +1,8 @@
-import React, { useCallback, useState, Component, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { DropZone } from "./DropZone";
 import RichEditor from "./RichEditor";
 import { publish } from "../../../api/publish"
 import { Tag } from "../Review/Tag";
-
-
-
 
 export const AddReviewModal = () => {
 
@@ -24,15 +21,17 @@ export const AddReviewModal = () => {
         renderRating(rating, viewRating, setViewRating)
     }, [rating])
 
-    
-   
-
     const [title, setTitle] = useState('')
     const [text, setText] = useState('')
 
-    const [tags, setTags] = useState(new Array())
-    let [inputTag, setInputTag] = useState('')
+    let [tags, setTags] = useState([])
 
+    useEffect(()=>{
+        console.log(tags)
+    }, [tags])
+
+    let [inputTag, setInputTag] = useState('')
+    
 
 
     function renderRating(rating, viewRating, setViewRating) {
@@ -41,9 +40,7 @@ export const AddReviewModal = () => {
         setUserRating(rating)
         let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
         let color 
-        
         color = colors[rating - 1]
-    
         viewRating = 'rating rating-' + color
         setViewRating(viewRating)
     }
@@ -91,9 +88,12 @@ export const AddReviewModal = () => {
                                                     event.preventDefault()
                                                     return
                                                 }
-
-                                                tags.push(inputTag)
-                                                setTags(tags)
+                                                async function push (){
+                                                    tags.push(inputTag)
+                                                }
+                                                push().then(()=>{
+                                                    setTags(tags)
+                                                })
                                                 setInputTag('')
                                                 event.preventDefault()
 
@@ -110,10 +110,12 @@ export const AddReviewModal = () => {
 
                                     </div>
 
+                                    
                                     {
-                                        tags ? tags.map((tag, index) => <Tag tag={tag} key={index + 100} />) : ''
+                                        // add 
+                                        // tags={tags} setTags={setTags}
+                                        tags ? tags.map((tag, index) => {return <Tag tag={tag} key={index + 100} id={index}/>}) : ''
                                     }
-
 
                                 </div>
 
