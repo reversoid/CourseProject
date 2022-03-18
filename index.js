@@ -21,15 +21,17 @@ const app = express()
 app.use(express.static(__dirname))
 app.use(express.static(path.resolve(__dirname, 'build')))
 
-app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname,  "build", "index.html"))
-})
+
 const {myUrl} = require('./server/config.json')
 app.use(cors({credentials:true, origin: [myUrl, new RegExp(`\\^${myUrl}`)]}))
 app.use(cookieParser());
 // app.use(corsMiddleware)
 app.use(express.json())
 app.use('/api/auth', authRouter)
+
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname,  "build", "index.html"))
+})
 
 const start = async () => {
     try{

@@ -230,9 +230,66 @@ class authController {
             })
         }
         try {
-            const {
-                id
-            } = req.body || 0
+            let {
+                tags,
+                filmsChecked,
+                gamesChecked,
+                booksChecked,
+                musicChecked,
+                fromDate,
+                toDate
+            } = req.query
+
+            filmsChecked = filmsChecked=='true'
+            gamesChecked = gamesChecked=='true'
+            booksChecked = booksChecked=='true'
+            musicChecked = musicChecked=='true'
+
+            console.log(req.query);
+            
+
+
+            // make DATE string
+            let dateQuery
+            if(!fromDate && !toDate){
+                dateQuery = ''
+            }
+            else if (!fromDate){
+                dateQuery = `created <= '${toDate} 23:59:59'`
+            }
+            else if (!toDate){
+                dateQuery = `created >= '${fromDate} 00:00:00'`
+            }
+            else{
+                //both exist
+                dateQuery = `created >= '${toDate} 00:00:00' AND created <= '${toDate} 23:59:59'`
+            }
+
+            console.log('before category');
+
+            // make category string
+            let categoryQuery
+            if (!filmsChecked && !gamesChecked && !booksChecked && !musicChecked){
+                categoryQuery = ''
+            }
+            else{
+                //exist at least 1 category
+
+                let categoryArr = [
+                    filmsChecked?`'films' `:'',
+                    gamesChecked?`'games' `:'',
+                    booksChecked?`'books' `:'',
+                    musicChecked?`'music' `:''
+                ].map((el)=>{if (el) {return el} }).toString()
+                console.log('category', categoryArr);
+                
+                categoryQuery = ((fromDate || toDate)?'AND ':'')+`category in (${categoryArr})`
+            }
+            console.log('all fine');
+            
+            // const {
+            //     id
+            // } = req.body || 0
 
             // limit: 5
             // const posts = await Post.findAll({
@@ -252,22 +309,40 @@ class authController {
                     username
                 from posts
                         join users u on u.id = posts.uid_fk
+                ${(dateQuery||categoryQuery)?'where':''} ${dateQuery} ${categoryQuery}
                 order by created DESC
             `)
+            let debug = `
+            select post_id,
+                title,
+                text,
+                like_count,
+                uid_fk,
+                rating,
+                created,
+                username
+            from posts
+                    join users u on u.id = posts.uid_fk
+            ${(dateQuery||categoryQuery)?'where':''} ${dateQuery} ${categoryQuery}
+            order by created DESC
+        `
+        console.log(debug);
             // const allLikes = await Post_like.findAll({where: {uid_fk: id}})
             // console.log(allLikes.filter(like => (like.getDataValue('post_id_fk'))))
 
-            setIsLiked(posts, id)
+            // setIsLiked(posts, id)
             // await Promise.all(posts)
             // console.log('got all!');
             return res.json({
                 posts,
+                req: req.query,
                 code: 0
             })
         } catch (e) {
             res.status(400).json({
                 message: 'Error accessing to database',
-                code: 1
+                code: 1,
+                e
             })
         }
     }
@@ -293,7 +368,8 @@ class authController {
                 title,
                 text,
                 rating,
-                tags
+                tags,
+                category
             } = req.body
             const userId = req.userId
 
@@ -307,7 +383,8 @@ class authController {
                 created: date,
                 like_count: 0,
                 uid_fk: userId,
-                rating
+                rating,
+                category
             })
 
             await tags.map((tag) => {
@@ -446,11 +523,11 @@ class authController {
                 comments
             })
         } catch (e) {
-            return res.status(400).json({
-                message: 'Comments loading failed',
-                code: 1,
-                e
-            })
+            // return res.status(400).json({
+            //     message: 'Comments loading failed',
+            //     code: 1,
+            //     e
+            // })
         }
     }
 }

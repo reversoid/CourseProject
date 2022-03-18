@@ -9,12 +9,27 @@ import { getPosts } from '../../../api/getPosts'
 import { getCurrentUserData } from '../../../api/getCurrentUserData'
 
 export const Feed = () => {
+
+    // posts array, my id and filters states
     let [posts, setPosts] = useState([])
     const [id, setId] = useState(1)
+    let [filters, setFilters] = useState(new Object())
+
+    // at the start we get posts and current user if logged in
     useEffect(()=>{
-        getCurrentUserData().then((response)=>{setId(response.id)})
-        getPosts().then((response)=>{setPosts(response)})
+        getCurrentUserData().then((response)=>
+        {
+            if (!response) {return}
+            setId(response.id)
+        })
+        getPosts(filters).then((response)=>{setPosts(response)})
     }, [])
+
+    // when the filter value is changed we get posts with this filter
+    useEffect(()=>{
+        getPosts(filters).then((response)=>{setPosts(response)})
+    }, [filters])
+
     return (
         <>
             <Navigation />
@@ -30,7 +45,7 @@ export const Feed = () => {
                         {posts?posts.map((post, index) => {return <Review post={post} key={index} currentId={id}/>}):''}                        
                     </div>
                     <div className="col-lg-3 d-none d-lg-block">
-                        <Filter />
+                        <Filter filters={filters} setFilters={setFilters}/>
                     </div>
                 </div>
             </section>

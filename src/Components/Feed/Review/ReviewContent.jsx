@@ -34,7 +34,7 @@ export const ReviewContent = (props) => {
             <ReviewContentScore rating={props.review.rating} color={color} hoverTitle={hoverTitle}/>
 
             <div className="tags mb-3">
-                {tags.map((tag, index)=>{return <Tag tag={tag.text} key={index + 10000}/>})}
+                {tags?tags.map((tag, index)=>{return <Tag tag={tag.text} key={index + 10000}/>}):''}
                 {/* <Tag tag={'hehehe1'}/> */}
             </div>
         </div>)

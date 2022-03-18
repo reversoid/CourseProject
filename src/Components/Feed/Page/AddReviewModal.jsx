@@ -32,6 +32,7 @@ export const AddReviewModal = () => {
 
     let [inputTag, setInputTag] = useState('')
     
+    let [category, setCategory] = useState('')
 
 
     function renderRating(rating, viewRating, setViewRating) {
@@ -76,6 +77,17 @@ export const AddReviewModal = () => {
                                         renderRating(event.target.value, viewRating, setViewRating)
                                     }}/>
                                     <span className="text-secondary mt-1">Your score</span>
+                                    <select className="form-select shadow-none mt-3 mb-2" id="floatingSelect"
+                                        value={category}
+                                        onChange={(e)=>{
+                                        setCategory(e.target.value)
+                                    }}>
+                                        <option defaultValue>Select category</option>
+                                        <option value="films">Films</option>
+                                        <option value="games">Games</option>
+                                        <option value="books">Books</option>
+                                        <option value="music">Music</option>
+                                    </select>
                                 </div>
                                 <div className="d-block mt-3 mb-4">
                                     <div className="tag bg-warning set-tag me-3 mb-2">
@@ -127,7 +139,7 @@ export const AddReviewModal = () => {
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button"
                             className="btn btn-primary"
-                            onClick={() => publish(title, text, rating, tags)}
+                            onClick={() => publish(title, text, rating, tags, category)}
                         >Publish</button>
                     </div>
                 </div>

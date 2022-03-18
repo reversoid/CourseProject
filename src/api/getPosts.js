@@ -1,9 +1,9 @@
 import axios from 'axios'
 import config from '../config.json'
 
-export const getPosts = async () => {
+export const getPosts = async (params) => {
     try {
-        const response = await axios.post(config.myUrl+'/api/auth/getPosts', {id: 1})
+        const response = await axios.get(config.myUrl+'/api/auth/getPosts', {params})
         
         return response.data.posts
     } catch (e) {
