@@ -35,6 +35,10 @@ const Post = sequelize.define('Post', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    category: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 },
     { timestamps: false }
 )

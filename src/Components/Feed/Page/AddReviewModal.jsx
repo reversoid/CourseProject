@@ -27,7 +27,6 @@ export const AddReviewModal = () => {
     let [tags, setTags] = useState([])
 
     useEffect(()=>{
-        console.log(tags)
     }, [tags])
 
     let [inputTag, setInputTag] = useState('')
@@ -139,7 +138,7 @@ export const AddReviewModal = () => {
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button"
                             className="btn btn-primary"
-                            onClick={() => publish(title, text, rating, tags, category)}
+                            onClick={() => {publish(title, text, rating, tags, category)}}
                         >Publish</button>
                     </div>
                 </div>

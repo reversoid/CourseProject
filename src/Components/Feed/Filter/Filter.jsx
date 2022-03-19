@@ -133,13 +133,13 @@ export const Filter = (props) => {
                     <button className="btn btn-primary my-3 shadow-none"
                     onClick={()=>{
                         props.setFilters({
-                            tags,                
                             filmsChecked,
                             gamesChecked,
                             booksChecked,
                             musicChecked,
                             fromDate,
-                            toDate
+                            toDate,
+                            tags
                         })
                     }}
                     >Применить</button>

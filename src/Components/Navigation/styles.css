@@ -8,6 +8,9 @@
    
    background-position: center;
 }
+.logo:hover{
+    cursor: pointer;
+}
 nav{
     height: 70px;
     display: flex;

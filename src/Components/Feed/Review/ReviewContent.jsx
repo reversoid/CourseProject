@@ -8,7 +8,8 @@ import {getTags} from '../../../api/getTags'
 import { render } from "@testing-library/react";
 
 export const ReviewContent = (props) => {
-    
+    const [created, setCreated] = useState(props.review.created)
+
     function getReview() {
         let colors = ['very-bad', 'bad', 'satisfactory', 'good', 'excellent']
         let color = colors[props.review.rating - 1] || 'very-bad'
@@ -25,6 +26,9 @@ export const ReviewContent = (props) => {
                     <div className="written-by text-primary d-inline">
                         {props.review.username}
                     </div>
+                    <div className="text-light d-inline ms-2">UTC {created?created.slice(0, 19).replace('T', ' '):''}</div>
+
+                    <div className="span mt-1 text-secondary">Category: {props.review.category?props.review.category:''}</div>
             </div>
             <div className="description pb-3 text-light">
                 <RichViewer text={props.review.text}/>                

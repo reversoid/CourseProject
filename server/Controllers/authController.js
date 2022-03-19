@@ -134,159 +134,120 @@ class authController {
         });
     }
     async getProfile(req, res) {
-        // TODO FIX FUNCTION LATER, WORKS TOO LONG BECAUSE OF 2 AWAITS AND PROBABLY WRONG SELECT QUERY
-        // BECAUSE IT RETURNS 2 DIMESION ARRAY (SUBARRAYS ARE DUBLICATED)!!!
+        try {
+            const {
+                username
+            } = req.body
 
-        const {
-            username
-        } = req.body
+            const [profileInfo, metadata_user] = await User.sequelize.query(`
+            SELECT id, user_likes_count FROM users WHERE username = '${username}' LIMIT 1
+            `)
+            // const profileInfo = await User.findOne({where: {username}})
+            if (!profileInfo) {
+                return res.status(400).json({
+                    message: 'Fatal error: user was not found!'
+                })
+            }
 
-        let result = []
-
-        // declare two async functions for getting info for profile
-        // async function getProfileInfo(result) {
-        //     const profileInfo = await User.sequelize.query(`
-        //     SELECT user_likes_count FROM users WHERE username = 'george' LIMIT 1
-        //     `)
-        //     if (!profileInfo) {
-        //         return res.status(400).json({ message: 'Fatal error: user was not found!' })
-        //     }
-        //     result.push(profileInfo)
-        // }
-
-        // async function getProfilePosts(result) {
-        //     const profilePosts = await User.sequelize.query(`
-        //     SELECT title, text, like_count, rating, created
-        //     FROM posts
-        //         JOIN users u ON u.id = posts.uid_fk
-        //     WHERE u.username = '${username}'
-        // `)
-
-        //     result.push(profilePosts)
-        // }
-
-        // TODO!!! QUERY ALSO RETURN METADATA, SHOULD BE CONST [INFO, METADATA] = QUERY(...)
-
-        // get profile info
-        const profileInfo = await User.sequelize.query(`
-            SELECT id, user_likes_count FROM users WHERE username = 'george' LIMIT 1
-        `)
-        // const profileInfo = await User.findOne({where: {username}})
-        console.log(profileInfo);
-        if (!profileInfo) {
-            return res.status(400).json({
-                message: 'Fatal error: user was not found!'
+            return res.json({
+                profileInfo,
             })
+
+        } catch (error) {
+            return res.status(500).json({error})
         }
-        // result.push(profileInfo)
-
-        // get posts
-        const profilePosts = await User.sequelize.query(`
-            SELECT title, text, like_count, rating, created, uid_fk, post_id
-            FROM posts
-                
-            WHERE uid_fk = ${profileInfo[0][0].id}
-            ORDER BY created desc 
-        `)
-
-        result.push(profilePosts)
-        return res.json({
-            profileInfo: profileInfo[0][0],
-            profilePosts: profilePosts[0]
-        })
 
         // Promise.all([getProfileInfo(result), getProfilePosts(result)]).then(()=>{return res.json({result})})
     }
-    async getUsernameById(req, res){
+    async getUsernameById(req, res) {
         try {
             // const {id} = req.body
             // const username = await User.findOne({where:{
             //     id
             // }})
-            return res.json({id})
+            return res.json({
+                id
+            })
         } catch (error) {
-            return res.status(500).json({message: 'Error finding user'})
+            return res.status(500).json({
+                message: 'Error finding user'
+            })
         }
     }
     async getPosts(req, res) {
-        const {
-            Op
-        } = require("sequelize");
-        async function setIsLiked(posts, id = 0) {
-            // const myLikes =  await Post_like.findAll({
-            //     where:{
-            //         uid_fk: id
-            //     }})
-            posts.map((post) => {
-                // Post_like.findOne({where:{
-                //     [Op.and]: [
-                //         {uid_fk: id},
-                //         {post_id_fk: post.getDataValue('post_id')}
-                //     ]}
-                // }).then((isLiked)=>{post.setDataValue('isLiked', Boolean(isLiked)); })
-
-                // console.log('here');
-
-            })
-        }
         try {
             let {
-                tags,
                 filmsChecked,
                 gamesChecked,
                 booksChecked,
                 musicChecked,
                 fromDate,
-                toDate
+                toDate,
+                tags,
+                username
+
             } = req.query
-
-            filmsChecked = filmsChecked=='true'
-            gamesChecked = gamesChecked=='true'
-            booksChecked = booksChecked=='true'
-            musicChecked = musicChecked=='true'
-
-            console.log(req.query);
             
 
+            filmsChecked = filmsChecked == 'true'
+            gamesChecked = gamesChecked == 'true'
+            booksChecked = booksChecked == 'true'
+            musicChecked = musicChecked == 'true'
 
+
+            // first of all determine whether there are tags
+            let allowedPosts
+            let tagsQuery
+            if (tags) {
+                let [allowedPosts, metadata] = await Tag.sequelize.query(`select post_id_fk from tags where text in (${tags.map((el)=>{return `'${el}'`}).toString()})`)
+                if (!allowedPosts.length) {
+                    return res.json({
+                        posts: [],
+                        code: 0
+                    })
+                }
+                tagsQuery = `post_id_fk in (${allowedPosts.map((el)=>{return `'${String(el)}'`}).toString()})`
+            } else {
+                tagsQuery = ''
+            }
             // make DATE string
             let dateQuery
-            if(!fromDate && !toDate){
+            if (!fromDate && !toDate) {
                 dateQuery = ''
-            }
-            else if (!fromDate){
+            } else if (!fromDate) {
                 dateQuery = `created <= '${toDate} 23:59:59'`
-            }
-            else if (!toDate){
+            } else if (!toDate) {
                 dateQuery = `created >= '${fromDate} 00:00:00'`
-            }
-            else{
+            } else {
                 //both exist
                 dateQuery = `created >= '${toDate} 00:00:00' AND created <= '${toDate} 23:59:59'`
             }
 
-            console.log('before category');
 
             // make category string
             let categoryQuery
-            if (!filmsChecked && !gamesChecked && !booksChecked && !musicChecked){
+            if (!filmsChecked && !gamesChecked && !booksChecked && !musicChecked) {
                 categoryQuery = ''
-            }
-            else{
+            } else {
                 //exist at least 1 category
 
                 let categoryArr = [
-                    filmsChecked?`'films' `:'',
-                    gamesChecked?`'games' `:'',
-                    booksChecked?`'books' `:'',
-                    musicChecked?`'music' `:''
-                ].map((el)=>{if (el) {return el} }).toString()
-                console.log('category', categoryArr);
-                
-                categoryQuery = ((fromDate || toDate)?'AND ':'')+`category in (${categoryArr})`
+                    filmsChecked ? `'films' ` : '',
+                    gamesChecked ? `'games' ` : '',
+                    booksChecked ? `'books' ` : '',
+                    musicChecked ? `'music' ` : ''
+                ].filter((el) => {
+                    if (el) {
+                        return el
+                    }
+                }).toString()
+
+                categoryQuery = ((fromDate || toDate) ? 'AND ' : '') + `category in (${categoryArr})`
             }
-            console.log('all fine');
-            
+
+
+            //query for specific user
+            let usernameQuery = username?`username = '${username}'`: ''
             // const {
             //     id
             // } = req.body || 0
@@ -296,8 +257,9 @@ class authController {
             //     order: [
             //         ['created', 'DESC']
             //     ]
-                
+
             // })
+            //used to be
             const [posts, metadata] = await Post.sequelize.query(`
                 select post_id,
                     title,
@@ -306,12 +268,17 @@ class authController {
                     uid_fk,
                     rating,
                     created,
-                    username
+                    username,
+                    category
                 from posts
                         join users u on u.id = posts.uid_fk
-                ${(dateQuery||categoryQuery)?'where':''} ${dateQuery} ${categoryQuery}
+                ${(dateQuery||categoryQuery||tagsQuery|| usernameQuery)?'where':''} ${dateQuery} ${categoryQuery} ${tagsQuery} ${usernameQuery}
                 order by created DESC
             `)
+
+
+
+
             let debug = `
             select post_id,
                 title,
@@ -326,13 +293,6 @@ class authController {
             ${(dateQuery||categoryQuery)?'where':''} ${dateQuery} ${categoryQuery}
             order by created DESC
         `
-        console.log(debug);
-            // const allLikes = await Post_like.findAll({where: {uid_fk: id}})
-            // console.log(allLikes.filter(like => (like.getDataValue('post_id_fk'))))
-
-            // setIsLiked(posts, id)
-            // await Promise.all(posts)
-            // console.log('got all!');
             return res.json({
                 posts,
                 req: req.query,
@@ -356,9 +316,14 @@ class authController {
                     post_id_fk: post_id
                 }
             })
-            return res.json({tags})
+            return res.json({
+                tags
+            })
         } catch (e) {
-            return res.status(400).json({message: 'Error getting tags', e})
+            return res.status(400).json({
+                message: 'Error getting tags',
+                e
+            })
         }
     }
     async publish(req, res) {
@@ -375,12 +340,11 @@ class authController {
 
 
             let date = new Date()
-            date = date.toISOString().slice(0, 19).replace('T', ' ')
 
             const post = await Post.create({
                 title,
                 text,
-                created: date,
+                created: date.toISOString().slice(0, 19).replace('T', ' '),
                 like_count: 0,
                 uid_fk: userId,
                 rating,

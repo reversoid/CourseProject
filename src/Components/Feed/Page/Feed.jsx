@@ -7,14 +7,14 @@ import { AddReviewModal } from './AddReviewModal'
 import { DropZone } from './DropZone'
 import { getPosts } from '../../../api/getPosts'
 import { getCurrentUserData } from '../../../api/getCurrentUserData'
+import {Navigate} from 'react-router-dom'
 
-export const Feed = () => {
+export const Feed = (props) => {
 
     // posts array, my id and filters states
     let [posts, setPosts] = useState([])
     const [id, setId] = useState(1)
     let [filters, setFilters] = useState(new Object())
-
     // at the start we get posts and current user if logged in
     useEffect(()=>{
         getCurrentUserData().then((response)=>
