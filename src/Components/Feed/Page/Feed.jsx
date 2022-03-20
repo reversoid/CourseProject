@@ -30,9 +30,11 @@ export const Feed = (props) => {
         getPosts(filters).then((response)=>{setPosts(response)})
     }, [filters])
 
+    let [navigate, setNavigate] = useState('')
     return (
         <>
             {/* <Navigation /> */}
+            {navigate}
             <section className='container-xxl text-light main-section'>
                 <div className="toolbar">
                     <h1 className='py-3'>Reviews</h1>

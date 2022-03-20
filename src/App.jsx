@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Navigation/>
-      <Routes> 
+      <Routes>
         <Route path='/feed' element={<Feed/>}/>
         <Route path='/profile' element={<Profile/>}/>
         <Route path='*' element={<Navigate to='/feed'/>}/>
