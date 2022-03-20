@@ -361,7 +361,6 @@ class authController {
             } = req.body
 
             const from_id = req.userId
-            console.log('fromid!',from_id);
             let date = new Date()
             date = date.toISOString().slice(0, 19).replace('T', ' ')
 
@@ -384,6 +383,12 @@ class authController {
                 postToDecreaseLike.save()
 
                 like_candidate.destroy()
+
+                const userToDecreaseLike = await User.findOne({where:{
+                    id: postToDecreaseLike.getDataValue('uid_fk')
+                }})
+                userToDecreaseLike.setDataValue('user_likes_count', Number(userToDecreaseLike.getDataValue('user_likes_count')) - 1)
+                await userToDecreaseLike.save()
                 return res.json({
                     message: 'Unliked sucessfully',
                     status: 'unliked'
@@ -401,6 +406,13 @@ class authController {
                     uid_fk: from_id,
                     created: date
                 })
+
+                const userToIncreaseLike = await User.findOne({where:{
+                    id: postToIncreaseLike.getDataValue('uid_fk')
+                }})
+                console.log('postToIncreaseLike.getDataValue(uid_fk)', postToIncreaseLike.getDataValue('uid_fk'));
+                userToIncreaseLike.setDataValue('user_likes_count', Number(userToIncreaseLike.getDataValue('user_likes_count')) +1)
+                await userToIncreaseLike.save()
                 return res.json({
                     message: 'Liked sucessfully',
                     status: 'liked'
@@ -486,7 +498,6 @@ class authController {
                 post_id_fk: post_id
             }})
 
-            console.log('isLiked', 'id', id, 'post_id', post_id, 'isLiked', isLiked)
             return res.json({isLiked: Boolean(isLiked)})
         } catch (e) {
             return res.status(400).json({isLiked: false, e})

@@ -18,6 +18,10 @@ const User = sequelize.define('User', {
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    user_likes_count: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 },
     { timestamps: false }
