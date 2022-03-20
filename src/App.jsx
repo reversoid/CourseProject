@@ -2,7 +2,7 @@ import React from 'react'
 import { Feed } from './Components/Feed/Page/Feed.jsx';
 import { Profile } from './Components/Profile/Profile.jsx';
 import {Route, Routes, Link, Navigate} from 'react-router-dom'
-import { Navigation } from '../../Navigation/Navigation'
+import { Navigation } from './Components/Navigation/Navigation'
 
 function App() {
   return (
