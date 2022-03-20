@@ -13,6 +13,7 @@ const {
     secret
 } = require('../config')
 const cookieParser = require('cookie-parser')
+const { json } = require('sequelize')
 
 const generateAcessToken = (id, username) => {
     const payload = {
@@ -188,7 +189,7 @@ class authController {
 
             } = req.query
             
-
+            // make values boolean
             filmsChecked = filmsChecked == 'true'
             gamesChecked = gamesChecked == 'true'
             booksChecked = booksChecked == 'true'
@@ -199,14 +200,15 @@ class authController {
             let allowedPosts
             let tagsQuery
             if (tags) {
-                let [allowedPosts, metadata] = await Tag.sequelize.query(`select post_id_fk from tags where text in (${tags.map((el)=>{return `'${el}'`}).toString()})`)
+                let [allowedPosts, metadata] = await Tag.sequelize.query(`select post_id_fk from tags where text in (${tags.map((el)=>{return `'${el}'`}).toString()}) group by post_id_fk`)
                 if (!allowedPosts.length) {
                     return res.json({
                         posts: [],
                         code: 0
                     })
                 }
-                tagsQuery = `post_id_fk in (${allowedPosts.map((el)=>{return `'${String(el)}'`}).toString()})`
+                console.log(JSON.stringify(allowedPosts[0].post_id_fk));
+                tagsQuery = `post_id in (${allowedPosts.map((el)=>{return `${el.post_id_fk}`}).toString()})`
             } else {
                 tagsQuery = ''
             }
