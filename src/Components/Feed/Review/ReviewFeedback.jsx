@@ -5,6 +5,7 @@ import {comment} from '../../../api/comment'
 import {getComments} from '../../../api/getComments'
 import {getCurrentUserData} from '../../../api/getCurrentUserData'
 
+import {isLiked} from '../../../api/isLiked'
 
 
 export const ReviewFeedback = (props) => {
@@ -20,6 +21,12 @@ export const ReviewFeedback = (props) => {
     useEffect(()=>{
         getComments(props.post_id).then((response)=>{
             setComments(response)
+        })
+        isLiked(props.post_id, props.currentId).then((response)=>{
+            if (response){
+                setLikedState('like me-5'+(response.isLiked?' like-filled':''))
+            }
+            
         })
     }, [])
     return (

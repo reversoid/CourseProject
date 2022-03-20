@@ -12,7 +12,7 @@ import {Route, Routes, Link, Navigate} from 'react-router-dom'
 import './styles.css'
 export const Profile = () => {
     
-    const [username, setUsername] = useState('undefined')
+    const [username, setUsername] = useState('')
     const [likesCount, setLikesCount] = useState(0)
     const [posts, setPosts] = useState(new Array())
     const [id, setId] = useState(0)
@@ -47,7 +47,7 @@ export const Profile = () => {
                     <div className="profile-image-container">
                         <div className="profile-image"></div>
                     </div>
-                    <h1 className="username fw-bold text-center py-3 mb-5">{username}</h1>
+                    <h1 className="username fw-bold text-center py-3 mb-5">{username?username:''}</h1>
                 </div>
                 <div className="row">
                     <div className="col-9">

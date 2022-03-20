@@ -11,6 +11,8 @@ router.post('/protected', [Authorization], controller.protected)
 router.post('/getProfile', [Authorization], controller.getProfile)
 // router.post('/getPosts', controller.getPosts)
 router.get('/getPosts', controller.getPosts)
+router.post('/isLiked', controller.isLiked)
+
 
 router.post('/publish', [Authorization], controller.publish)
 router.post('/like', [Authorization], controller.like)
