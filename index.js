@@ -3,7 +3,7 @@ const path = require ('path')
 const corsMiddleware = require('./server/middleware/corsMiddleware')
 const authRouter = require('./server/Routers/authRouter/authRouter')
 // const apiRouter = require('./server/Routers/apiRouter/apiRouter')
-const {mySqlUri} = require('./server/config.json')
+const {mySqlUri} = require('./server/config.js')
 const cors = require('cors')
 const cookieParser = require("cookie-parser");
 // database
@@ -22,7 +22,7 @@ app.use(express.static(__dirname))
 app.use(express.static(path.resolve(__dirname, 'build')))
 
 
-const {myUrl} = require('./server/config.json')
+const {myUrl} = require('./server/config.js')
 app.use(cors({credentials:true, origin: [myUrl, new RegExp(`\\^${myUrl}`)]}))
 app.use(cookieParser());
 // app.use(corsMiddleware)

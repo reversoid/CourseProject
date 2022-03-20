@@ -1,5 +1,5 @@
 import axios from 'axios'
-import config from '../config.json'
+import config from '../config'
 
 export const toRegister = async (username, password, showInfo) => {
     try {        

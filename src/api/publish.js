@@ -1,5 +1,5 @@
 import axios from 'axios'
-import config from '../config.json'
+import config from '../config'
 
 export const publish = async (title, text, rating, tags, category) => {
     try {

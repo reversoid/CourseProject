@@ -1,6 +1,6 @@
 // database
 const { Sequelize, DataTypes } = require('sequelize');
-const { mySqlUri } = require('../../config.json')
+const { mySqlUri } = require('../../config')
 const sequelize = new Sequelize(mySqlUri)
 
 

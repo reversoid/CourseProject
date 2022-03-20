@@ -11,7 +11,7 @@ const sequelize = require('sequelize')
 
 const {
     secret
-} = require('../config.json')
+} = require('../config')
 const cookieParser = require('cookie-parser')
 
 const generateAcessToken = (id, username) => {

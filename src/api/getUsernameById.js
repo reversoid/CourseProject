@@ -1,5 +1,5 @@
 import axios from 'axios'
-import config from '../config.json'
+import config from '../config.js'
 
 export const getUsernameById = async () => {
     try {
