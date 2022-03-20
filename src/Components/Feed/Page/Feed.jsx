@@ -32,7 +32,7 @@ export const Feed = (props) => {
 
     return (
         <>
-            <Navigation />
+            {/* <Navigation /> */}
             <section className='container-xxl text-light main-section'>
                 <div className="toolbar">
                     <h1 className='py-3'>Reviews</h1>

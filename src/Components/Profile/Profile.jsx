@@ -41,7 +41,7 @@ export const Profile = () => {
     }, [])
     return (
         <>
-            <Navigation/>
+            {/* <Navigation/> */}
             <div className="container-xxl text-light mt-5">
                 <div className="row d-flex flex-column">
                     <div className="profile-image-container">
