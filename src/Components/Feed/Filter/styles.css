@@ -2,3 +2,7 @@
     border: 2px solid white;
     border-radius: 12px;
 }
+
+.placeholder-dark::placeholder{
+    color: #343a40 !important;
+}

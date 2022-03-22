@@ -34,9 +34,9 @@ export const Feed = (props) => {
     return (
         <>
             {/* <Navigation /> */}
-            {navigate}
+            {/* {navigate} */}
             <section className='container-xxl text-light main-section'>
-                <div className="toolbar">
+                <div className="toolbar container-fluid">
                     <h1 className='py-3'>Reviews</h1>
                     <div className="add-btn ms-3" data-bs-toggle="modal" data-bs-target="#addModal"></div>
                     <AddReviewModal/>

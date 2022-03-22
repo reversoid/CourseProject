@@ -12,7 +12,11 @@ import {Route, Routes, Link, Navigate} from 'react-router-dom'
 import './styles.css'
 export const Profile = () => {
     
-    const [username, setUsername] = useState('')
+    const [username, setUsername] = useState(
+        <div className="placeholder-glow mb-5 mt-3 d-flex justify-content-center">
+            <span className="placeholder col-3 py-3 mx-auto"></span>
+        </div>
+    )
     const [likesCount, setLikesCount] = useState(0)
     const [posts, setPosts] = useState(new Array())
     const [id, setId] = useState(0)
@@ -30,7 +34,7 @@ export const Profile = () => {
 
         // set username and get post for it
         getCurrentUserData().then((res)=>{
-            setUsername(res.username);
+            setUsername(<h1 className="username fw-bold text-center py-3 mb-5">{res.username}</h1>);
             setId(res.id)
             getProfile(String(res.username)).then((response)=>{
                 setLikesCount(response.profileInfo.user_likes_count)
@@ -41,21 +45,25 @@ export const Profile = () => {
     }, [])
     return (
         <>
-            {/* <Navigation/> */}
             <div className="container-xxl text-light mt-5">
                 <div className="row d-flex flex-column">
                     <div className="profile-image-container">
                         <div className="profile-image"></div>
                     </div>
-                    <h1 className="username fw-bold text-center py-3 mb-5">{username?username:''}</h1>
+
+                    {username?username:''}
                 </div>
+                <div className="container-fluid">
+                    <h1 className="py-3 pb-lg-5 d-inline-block">My reviews</h1>
+                    <h4 className="ms-lg-3 text-success d-lg-inline-block d-block pb-5 pb-lg-0">Total rating {likesCount}</h4>
+                </div>
+
                 <div className="row">
-                    <div className="col-9">
-                        <h1 className="py-3 pb-5 d-inline-block">My reviews</h1> <h4 className="ms-3 text-success d-inline-block">Total rating {likesCount}</h4>
+                    <div className="col-md-12 col-lg-9">
                         {posts?posts.map((post, index) => {return <Review post={post} key={index} currentId={id}/>}):''}                  
 
                     </div>
-                    <div className="col-3">
+                    <div className="col-lg-3 d-none d-lg-block">
                         <Filter filters={filters} setFilters={setFilters}/>
                     </div>
                 </div>

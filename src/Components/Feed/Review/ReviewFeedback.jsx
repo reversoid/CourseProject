@@ -47,7 +47,7 @@ export const ReviewFeedback = (props) => {
                 </div>
             </div>
             
-            <div className={commentCollapsed?"container px-5 collapsed":"container-lg px-5 mx-0"}>
+            <div className={commentCollapsed?"container px-5 comments-collapsed":"container-lg px-5 mx-0"}>
 
                 {comments?comments.map((comment, index)=>{return <Comment comment={comment} key={index+30}/>}):''}
                 <div className="mt-4">

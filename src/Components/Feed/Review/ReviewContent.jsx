@@ -23,7 +23,7 @@ export const ReviewContent = (props) => {
             <h2 className="title text-center py-3 mb-0">{props.review.title}</h2>
             <div className="ms-2 text-secondary my-3">
                     Written by: &nbsp;
-                    <div className="written-by text-primary d-inline">
+                    <div className="written-by text-warning d-inline">
                         {props.review.username}
                     </div>
                     <div className="text-light d-inline ms-2">UTC {created?created.slice(0, 19).replace('T', ' '):''}</div>
@@ -35,6 +35,7 @@ export const ReviewContent = (props) => {
             </div>
             
             {/* PICTURES HERE MAYBE CENTERED SLIDER */}
+
             <ReviewContentScore rating={props.review.rating} color={color} hoverTitle={hoverTitle}/>
 
             <div className="tags mb-3">

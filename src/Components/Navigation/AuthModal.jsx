@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { toRegister } from '../../api/registration'
 import { toLogin } from '../../api/login'
 
-import { Loader } from "../Loader/Loader"
+// import { Loader } from "../Loader/Loader"
 
 
 

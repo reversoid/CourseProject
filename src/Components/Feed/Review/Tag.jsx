@@ -14,7 +14,7 @@ export const Tag = (props) => {
     //     props.setTags(tags)
     // }
     return (
-        <div className={"tag bg-warning text-dark mx-1 my-1 d-inline-flex flex-row"}>
+        <div className={"tag bg-primary text-dark mx-1 my-1 d-inline-flex flex-row bg-secondary"}>
             <span className="tag-container">
                 #{props.tag}
             </span>

@@ -89,7 +89,7 @@ export const AddReviewModal = () => {
                                     </select>
                                 </div>
                                 <div className="d-block mt-3 mb-4">
-                                    <div className="tag bg-warning set-tag me-3 mb-2">
+                                    <div className="tag bg-secondary set-tag me-3 mb-2">
 
                                         <form className="d-inline-block"
                                             onSubmit={(event) => {
@@ -110,7 +110,7 @@ export const AddReviewModal = () => {
 
                                             }}>
                                             <input type="text"
-                                                className="form-control bg-warning shadow-none border-0"
+                                                className="form-control bg-secondary shadow-none border-0 placeholder-dark"
                                                 placeholder="Add a tag"
                                                 value={inputTag}
                                                 onChange={(event) => {
