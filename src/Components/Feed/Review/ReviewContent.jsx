@@ -19,15 +19,13 @@ export const ReviewContent = (props) => {
         
         let borderColor = "border-"+color
         let borderClass = "reviewContent "+ "px-5 "+ borderColor
-        return (<div className="reviewContent px-5">
+        return (<div className="reviewContent px-lg-4 px-2">
             <h2 className="title text-center py-3 mb-0">{props.review.title}</h2>
             <div className="ms-2 text-secondary my-3">
                     Written by: &nbsp;
                     <div className="written-by text-warning d-inline">
                         {props.review.username}
                     </div>
-                    <div className="text-light d-inline ms-2">UTC {created?created.slice(0, 19).replace('T', ' '):''}</div>
-
                     <div className="span mt-1 text-secondary">Category: {props.review.category?props.review.category:''}</div>
             </div>
             <div className="description pb-3 text-light">
@@ -38,10 +36,12 @@ export const ReviewContent = (props) => {
 
             <ReviewContentScore rating={props.review.rating} color={color} hoverTitle={hoverTitle}/>
 
-            <div className="tags mb-3">
+            <div className="tags mb-2">
                 {tags?tags.map((tag, index)=>{return <Tag tag={tag.text} key={index + 10000}/>}):''}
                 {/* <Tag tag={'hehehe1'}/> */}
             </div>
+            <div className="text-secondary ms-2 mb-3">UTC {created?created.slice(0, 19).replace('T', ' '):''}</div>
+
         </div>)
     }
 
