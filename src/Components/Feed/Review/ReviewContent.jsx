@@ -26,7 +26,7 @@ export const ReviewContent = (props) => {
                     <div className="written-by text-warning d-inline">
                         {props.review.username}
                     </div>
-                    <div className="span mt-1 text-secondary">Category: {props.review.category?props.review.category:''}</div>
+                    <div className="span mt-1 text-secondary">Category: <div className="text-light d-inline-block">{props.review.category?props.review.category:''}</div></div>
             </div>
             <div className="description pb-3 text-light">
                 <RichViewer text={props.review.text}/>                
