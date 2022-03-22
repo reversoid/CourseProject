@@ -71,10 +71,10 @@ export const Filter = (props) => {
 
 
                     {/* DATE SECTION */}
-                    <div className="d-block row w-100" id="dateBlock">
-                        <label htmlFor="dateFrom" className="ms-2 text-warning">From</label>
+                    <label htmlFor="dateFrom" className="ms-2 text-warning">From</label>
 
-                        <div className="col-8 m-auto mt-1">
+                    <div className="row d-flex justify-content-center">
+                        <div className="col-8 mt-1">
                             {/* FROM DATE */}
                             <input type="date"
                                 name=""
@@ -84,9 +84,13 @@ export const Filter = (props) => {
                                 onChange={(e) => setFromDate(e.target.value)}
                             />
                         </div>
-                        <label htmlFor="dateTo" className="ms-2 text-warning">To</label>
+                    </div>
 
-                        <div className="col-8 m-auto mt-1">
+                    <label htmlFor="dateTo" className="ms-2 text-warning">To</label>
+
+                    <div className="row d-flex justify-content-center">
+
+                        <div className="col-8 mt-1">
                             {/* TO DATE */}
                             <input type="date"
                                 name="" id="dateTo"
@@ -95,8 +99,9 @@ export const Filter = (props) => {
                                 onChange={(e) => setToDate(e.target.value)}
                             />
                         </div>
-
                     </div>
+
+
                     <form action=""
                         className="d-flex align-items-center justify-content-center mt-3"
                         onSubmit={(event) => {
