@@ -3,14 +3,14 @@ import config from '../config'
 
 export const like = async (post_id, likedState, setLikedState, likeCount, setLikeCount) => {
     try {
-        if (likedState === 'like me-5 like-filled'){
+        if (likedState === 'like like-filled'){
             // no like anymore
-            setLikedState('like me-5')
+            setLikedState('like')
             setLikeCount(likeCount - 1)
         }
         else{
             // like
-            setLikedState('like me-5 like-filled')
+            setLikedState('like like-filled')
             setLikeCount(likeCount + 1)
 
         }

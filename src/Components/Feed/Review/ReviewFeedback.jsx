@@ -10,7 +10,7 @@ import {isLiked} from '../../../api/isLiked'
 
 export const ReviewFeedback = (props) => {
     let [commentCollapsed, setCommentCollapsed] = useState(true)
-    let [likedState, setLikedState] = useState('like me-5')
+    let [likedState, setLikedState] = useState('like')
     let [comments, setComments] = useState(new Array())
     let [writeCommentValue, setWriteCommentValue] = useState('')
     let [likeCount, setLikeCount] = useState(props.like_count)
@@ -24,16 +24,16 @@ export const ReviewFeedback = (props) => {
         })
         isLiked(props.post_id, props.currentId).then((response)=>{
             if (response){
-                setLikedState('like me-5'+(response.isLiked?' like-filled':''))
+                setLikedState('like'+(response.isLiked?' like-filled':''))
             }
             
         })
     }, [])
     return (
-        <>
+        <div className="mx-lg-4 mx-3">
             <div className="feedback-panel">
                 <div className="comments-panel">
-                    <span className='fw-bold ms-5'>Comments&nbsp;</span>
+                    <span className='fw-bold'>Comments&nbsp;</span>
                     <span>({comments?comments.length:0})</span>
                     <div className={commentCollapsed?"down-arrow ms-3":"down-arrow ms-3 rotated"}
                     onClick={()=>toggleComment()}></div>
@@ -47,7 +47,7 @@ export const ReviewFeedback = (props) => {
                 </div>
             </div>
             
-            <div className={commentCollapsed?"container px-5 comments-collapsed":"container-lg px-5 mx-0"}>
+            <div className={commentCollapsed?"container px-3 px-lg-4 comments-collapsed":"container-lg  mx-0"}>
 
                 {comments?comments.map((comment, index)=>{return <Comment comment={comment} key={index+30}/>}):''}
                 <div className="mt-4">
@@ -67,7 +67,7 @@ export const ReviewFeedback = (props) => {
                 
             </div>
              
-        </>
+        </div>
         
 
     )
