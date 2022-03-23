@@ -13,7 +13,9 @@ const {
     secret
 } = require('../config')
 const cookieParser = require('cookie-parser')
-const { json } = require('sequelize')
+const {
+    json
+} = require('sequelize')
 
 const generateAcessToken = (id, username) => {
     const payload = {
@@ -153,7 +155,9 @@ class authController {
             })
 
         } catch (error) {
-            return res.status(500).json({error})
+            return res.status(500).json({
+                error
+            })
         }
     }
     // async getUsernameById(req, res) {
@@ -188,7 +192,7 @@ class authController {
                 username
 
             } = req.query
-            
+
             // make values boolean to work with
             filmsChecked = filmsChecked == 'true'
             gamesChecked = gamesChecked == 'true'
@@ -243,19 +247,19 @@ class authController {
             }
 
             //make USER string (in case we get info about user)
-            let usernameQuery = username?`username = '${username}'`: ''
+            let usernameQuery = username ? `username = '${username}'` : ''
 
             // editing everything with AND
-            if (categoryQuery){
+            if (categoryQuery) {
                 categoryQuery = ((dateQuery) ? 'AND ' : '') + categoryQuery
             }
-            if (tagsQuery){
+            if (tagsQuery) {
                 tagsQuery = ((dateQuery || categoryQuery) ? 'AND ' : '') + tagsQuery
             }
-            if (usernameQuery){
+            if (usernameQuery) {
                 usernameQuery = ((dateQuery || categoryQuery || tagsQuery) ? 'AND ' : '') + usernameQuery
             }
-            
+
             // making final query after all edits
             const [posts, metadata] = await Post.sequelize.query(`
                 SELECT post_id,
@@ -384,9 +388,11 @@ class authController {
 
                 like_candidate.destroy()
 
-                const userToDecreaseLike = await User.findOne({where:{
-                    id: postToDecreaseLike.getDataValue('uid_fk')
-                }})
+                const userToDecreaseLike = await User.findOne({
+                    where: {
+                        id: postToDecreaseLike.getDataValue('uid_fk')
+                    }
+                })
                 userToDecreaseLike.setDataValue('user_likes_count', Number(userToDecreaseLike.getDataValue('user_likes_count')) - 1)
                 await userToDecreaseLike.save()
                 return res.json({
@@ -407,11 +413,13 @@ class authController {
                     created: date
                 })
 
-                const userToIncreaseLike = await User.findOne({where:{
-                    id: postToIncreaseLike.getDataValue('uid_fk')
-                }})
+                const userToIncreaseLike = await User.findOne({
+                    where: {
+                        id: postToIncreaseLike.getDataValue('uid_fk')
+                    }
+                })
                 console.log('postToIncreaseLike.getDataValue(uid_fk)', postToIncreaseLike.getDataValue('uid_fk'));
-                userToIncreaseLike.setDataValue('user_likes_count', Number(userToIncreaseLike.getDataValue('user_likes_count')) +1)
+                userToIncreaseLike.setDataValue('user_likes_count', Number(userToIncreaseLike.getDataValue('user_likes_count')) + 1)
                 await userToIncreaseLike.save()
                 return res.json({
                     message: 'Liked sucessfully',
@@ -458,7 +466,7 @@ class authController {
     async getComments(req, res) {
 
         // get comments for a post
-        
+
         try {
             const {
                 post_id
@@ -486,21 +494,68 @@ class authController {
             // })
         }
     }
-    async isLiked(req, res){
+    async isLiked(req, res) {
         try {
-            const { post_id, id } = req.body
-            
-            if (!id){
-                return res.json({isLiked: false})
-            }
-            const isLiked = await Post_like.findOne({where:{
-                uid_fk: id,
-                post_id_fk: post_id
-            }})
+            const {
+                post_id,
+                id
+            } = req.body
 
-            return res.json({isLiked: Boolean(isLiked)})
+            if (!id) {
+                return res.json({
+                    isLiked: false
+                })
+            }
+            const isLiked = await Post_like.findOne({
+                where: {
+                    uid_fk: id,
+                    post_id_fk: post_id
+                }
+            })
+
+            return res.json({
+                isLiked: Boolean(isLiked)
+            })
         } catch (e) {
-            return res.status(400).json({isLiked: false, e})
+            return res.status(400).json({
+                isLiked: false,
+                e
+            })
+        }
+    }
+
+    async fullTextSearch(req, res) {
+        try {
+            // get string with whitespaces
+            const {
+                pattern
+            } = req.query
+            console.log('pattern', pattern);
+            console.log('query!', req.query);
+            if (!pattern || !pattern.trim() || !pattern.match(/^[^\+\-\*\>\<\"\@\)\(]*$/)){
+                return res.status(400).json({posts: [], message: `Find query must not be empty and contain special symbols`})
+            }
+            
+            const sqlQuery = pattern.split(' ').join('+')
+
+            const [posts, metadata] = await Post.sequelize.query(`
+                SELECT post_id,
+                    title,
+                    text,
+                    like_count,
+                    uid_fk,
+                    rating,
+                    created,
+                    username,
+                    category
+                FROM posts
+                        JOIN users u on u.id = posts.uid_fk
+                WHERE MATCH(text) AGAINST('${sqlQuery}' IN BOOLEAN MODE)
+                ORDER BY created DESC
+            `)
+            return res.status(200).json({posts})
+        } catch (error) {
+            return res.status(500).json({message: 'Error connecting to database', error})
         }
     }
 }
