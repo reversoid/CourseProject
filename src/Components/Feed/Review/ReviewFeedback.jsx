@@ -42,7 +42,9 @@ export const ReviewFeedback = (props) => {
                 <div className="like-panel">
                     <div className="likes-count me-3 fw-bold">{likeCount}</div>
                     <div className={likedState}
-                    onClick={(event)=>like(event.currentTarget.parentNode.parentNode.parentNode.id, likedState, setLikedState, likeCount, setLikeCount)}
+
+
+                    onClick={(event)=>like(event.currentTarget.parentNode.parentNode.parentNode.parentNode.id, likedState, setLikedState, likeCount, setLikeCount)}
                     ></div>
                 </div>
             </div>

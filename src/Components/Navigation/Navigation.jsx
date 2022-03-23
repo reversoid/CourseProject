@@ -78,7 +78,7 @@ export const Navigation = () => {
           </ul>
           <form className="d-flex ms-lg-4 ms-0 ms-lg-1 align-items-center flex-row mt-lg-0 mt-2">
             <input className="form-control me-lg-2 me-3 shadow-none" type="search" placeholder="Search for reviews" aria-label="Search" />
-            <button class="btn btn-warning shadow-none ms-1" type="submit">Search</button>
+            <button className="btn btn-warning shadow-none ms-1" type="submit">Search</button>
           </form>        
 
 
