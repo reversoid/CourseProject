@@ -175,33 +175,43 @@ class authController {
     //         })
     //     }
     // }
+
+    /**
+     * This method returns posts according to filters set
+     */
     async getPosts(req, res) {
 
-        // this method returns posts according to filters set
-
-        // firstly according to some logic string queries are created and then all is passed to main sql query
+        // firstly according to some logic SQL SUBQUERIES are created and then all is passed to main sql query
         try {
             let {
-                filmsChecked,
-                gamesChecked,
-                booksChecked,
-                musicChecked,
-                fromDate,
-                toDate,
+                // filter attributes
+                category,
+                dateFrom,
+                dateTo,
                 tags,
+                // in case this function is called in profile
                 username
 
             } = req.query
+            // console.log(category, dateFrom, dateTo, tags);
+            
+            // MAKE CATEGORY QUERY
+            let categoryQuery = category?`category in (${category.map((el)=>{return `'${el}'`}).join(', ')})`:""
+            
+            // MAKE DATE QUERY
+            let dateQuery
+            if (!dateFrom && !dateTo) {
+                dateQuery = ''
+            } else if (!dateFrom) {
+                dateQuery = `created <= '${dateTo} 23:59:59'`
+            } else if (!dateTo) {
+                dateQuery = `created >= '${dateFrom} 00:00:00'`
+            } else {
+                //both exist
+                dateQuery = `created >= '${dateFrom} 00:00:00' AND created <= '${dateTo} 23:59:59'`
+            }
 
-            // make values boolean to work with
-            filmsChecked = filmsChecked == 'true'
-            gamesChecked = gamesChecked == 'true'
-            booksChecked = booksChecked == 'true'
-            musicChecked = musicChecked == 'true'
-
-
-            // first of all make TAGS string
-            let allowedPosts
+            // MAKE TAGS QUERY
             let tagsQuery
             if (tags) {
                 let [allowedPosts, metadata] = await Tag.sequelize.query(`select post_id_fk from tags where text in (${tags.map((el)=>{return `'${el}'`}).toString()}) group by post_id_fk`)
@@ -215,38 +225,7 @@ class authController {
                 tagsQuery = ''
             }
 
-            // make DATE string
-            let dateQuery
-            if (!fromDate && !toDate) {
-                dateQuery = ''
-            } else if (!fromDate) {
-                dateQuery = `created <= '${toDate} 23:59:59'`
-            } else if (!toDate) {
-                dateQuery = `created >= '${fromDate} 00:00:00'`
-            } else {
-                //both exist
-                dateQuery = `created >= '${toDate} 00:00:00' AND created <= '${toDate} 23:59:59'`
-            }
-
-            // make CATEGORY string
-            let categoryQuery
-            if (!filmsChecked && !gamesChecked && !booksChecked && !musicChecked) {
-                categoryQuery = ''
-            } else {
-                let categoryArr = [
-                    filmsChecked ? `'films' ` : '',
-                    gamesChecked ? `'games' ` : '',
-                    booksChecked ? `'books' ` : '',
-                    musicChecked ? `'music' ` : ''
-                ].filter((el) => {
-                    if (el) {
-                        return el
-                    }
-                }).toString()
-                categoryQuery = `category in (${categoryArr})`
-            }
-
-            //make USER string (in case we get info about user)
+            // MAKE USERNAME QUERY
             let usernameQuery = username ? `username = '${username}'` : ''
 
             // editing everything with AND
@@ -534,10 +513,13 @@ class authController {
             } = req.query
             console.log('pattern', pattern);
             console.log('query!', req.query);
-            if (!pattern || !pattern.trim() || !pattern.match(/^[^\+\-\*\>\<\"\@\)\(]*$/)){
-                return res.status(400).json({posts: [], message: `Find query must not be empty and contain special symbols`})
+            if (!pattern || !pattern.trim() || !pattern.match(/^[^\+\-\*\>\<\"\@\)\(]*$/)) {
+                return res.status(400).json({
+                    posts: [],
+                    message: `Find query must not be empty and contain special symbols`
+                })
             }
-            
+
             const sqlQuery = pattern.split(' ').join('+')
 
             const [posts, metadata] = await Post.sequelize.query(`
@@ -555,9 +537,14 @@ class authController {
                 WHERE MATCH(text) AGAINST('${sqlQuery}' IN BOOLEAN MODE)
                 ORDER BY created DESC
             `)
-            return res.status(200).json({posts})
+            return res.status(200).json({
+                posts
+            })
         } catch (error) {
-            return res.status(500).json({message: 'Error connecting to database', error})
+            return res.status(500).json({
+                message: 'Error connecting to database',
+                error
+            })
         }
     }
 }

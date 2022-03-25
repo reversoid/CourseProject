@@ -35,8 +35,6 @@ export const Feed = (props) => {
     let [navigate, setNavigate] = useState('')
     return (
         <>
-            {/* <Navigation /> */}
-            {/* {navigate} */}
             <section className='container-xxl text-light main-section'>
                 <div className="toolbar container-fluid">
                     <h1 className='py-3 w-100'>Reviews</h1>

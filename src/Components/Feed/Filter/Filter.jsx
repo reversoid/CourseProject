@@ -1,49 +1,88 @@
-import React, { useState } from "react"
+import * as React from "react";
+import { useState } from 'react'
+import * as JSURL from "jsurl";
 import { Tag } from '../../Feed/Review/Tag'
+
+import { useQueryParam } from '../../../hooks/useQueryParam'
 import './styles.css'
 
 export const Filter = (props) => {
+    // value of input tag
     let [tag, setTag] = useState('')
-    let [tags, setTags] = useState([])
 
-    // CHECKBOX STATES
-    let [filmsChecked, setFilmsChecked] = useState(false)
-    let [gamesChecked, setGamesChecked] = useState(false)
-    let [booksChecked, setBooksChecked] = useState(false)
-    let [musicChecked, setMusicChecked] = useState(false)
+    // get filter values from url
+    let [filter, setFilter] = useQueryParam("filter");
 
-    // DATE STATES
-    let [fromDate, setFromDate] = useState('')
-    let [toDate, setToDate] = useState('')
+    // fill default values
+    if (!filter) {
+        filter = { category: [], dateFrom: "", dateTo: "", tags: [] };
+    }
+
+    // TODO is legacy code, can be simplified with only filter.tags probably
+    let [tags, setTags] = useState(filter.tags)
+
+    /**
+     * This function handles change of form
+     * @param {*} event
+     * @param {*} changeOfTags determines whether form inputs changes or tags changes
+     */
+    function handleChange(event, changeOfTags = false) {
+        let form
+        if (changeOfTags)
+            form = event.currentTarget.parentNode;
+        else
+            form = event.currentTarget;
+
+        let formData = new FormData(form);
+
+        // This complex data structure is preserved in the URL in the
+        // `filter` query parameter each time a value in the form changes!
+        let filter = {
+            category: formData.getAll("category"),
+            dateFrom: formData.get("dateFrom"),
+            dateTo: formData.get("dateTo"),
+            tags: tags,
+        };
+
+        setFilter(filter, { replace: true });
+    }
 
     return (
         <div className="filters">
             <h4 className="text-center py-3 pb-4">Filters</h4>
 
             <div className="">
-                {/* <span className="text-center w-100">Date</span> */}
-                <div action="" className="d-flex flex-column" onSubmit={(e) => {
+                <form id="filterForm" className="d-flex flex-column" onSubmit={(e) => {
+                    // PROBABLY MUST BE DELETED CAUSE NO SUBMIT IS HERE
+                    props.setFilters(filter)
                     e.preventDefault()
-                }}>
+                }}
+                    onChange={handleChange}
+                >
+                    {/* CATEGORY SECTION */}
                     <label htmlFor="form-check" className="text-warning ms-2">Category</label>
                     <div className="form-check mt-1 mb-3" id="form-check">
                         <div className="d-block">
                             <label htmlFor="films">Films</label>
-                            <input type="checkbox"
+                            <input
+                                type="checkbox"
                                 className="form-check-input mx-1 shadow-none"
                                 id="films"
-                                checked={filmsChecked}
-                                onChange={() => setFilmsChecked(!filmsChecked)}
+                                defaultChecked={filter.category.includes("films")}
+                                name="category"
+                                value="films"
                             />
                         </div>
 
                         <div className="d-block">
                             <label htmlFor="games">Games</label>
-                            <input type="checkbox"
+                            <input
+                                type="checkbox"
                                 className="form-check-input mx-1 shadow-none"
                                 id="games"
-                                checked={gamesChecked}
-                                onChange={() => setGamesChecked(!gamesChecked)}
+                                defaultChecked={filter.category.includes("games")}
+                                name="category"
+                                value="games"
                             />
                         </div>
 
@@ -52,8 +91,9 @@ export const Filter = (props) => {
                             <input type="checkbox"
                                 className="form-check-input mx-1 shadow-none"
                                 id="books"
-                                checked={booksChecked}
-                                onChange={(e) => setBooksChecked(!booksChecked)}
+                                defaultChecked={filter.category.includes("books")}
+                                name="category"
+                                value="books"
                             />
                         </div>
 
@@ -62,8 +102,9 @@ export const Filter = (props) => {
                             <input type="checkbox"
                                 className="form-check-input mx-1 shadow-none"
                                 id="films"
-                                checked={musicChecked}
-                                onChange={(e) => setMusicChecked(!musicChecked)}
+                                defaultChecked={filter.category.includes("music")}
+                                name="category"
+                                value="music"
                             />
                         </div>
 
@@ -77,11 +118,10 @@ export const Filter = (props) => {
                         <div className="col-8 mt-1">
                             {/* FROM DATE */}
                             <input type="date"
-                                name=""
                                 id="dateFrom"
                                 className="form-control bg-secondary text-light border-0 ps-2 shadow-none mb-2"
-                                value={fromDate}
-                                onChange={(e) => setFromDate(e.target.value)}
+                                name="dateFrom"
+                                defaultValue={filter.dateFrom}
                             />
                         </div>
                     </div>
@@ -93,18 +133,18 @@ export const Filter = (props) => {
                         <div className="col-8 mt-1">
                             {/* TO DATE */}
                             <input type="date"
-                                name="" id="dateTo"
+                                id="dateTo"
                                 className="form-control bg-secondary text-light border-0 ps-2 shadow-none"
-                                value={toDate}
-                                onChange={(e) => setToDate(e.target.value)}
+                                name="dateTo"
+                                defaultValue={filter.dateTo}
                             />
                         </div>
                     </div>
 
-
-                    <form action=""
+                    <div
                         className="d-flex align-items-center justify-content-center mt-3"
-                        onSubmit={(event) => {
+                        onKeyDown={(event) => {
+                            if (event.key != 'Enter') { return }
                             tag = tag.trim()
                             if (!tag.trim() || tag.includes('#') || tag.includes(' ')) {
                                 alert('Tag must not be empty, not contain "#" and whitespaces')
@@ -114,6 +154,7 @@ export const Filter = (props) => {
                             tags.push(tag)
                             setTags(tags)
                             setTag('')
+                            handleChange(event, true)
                             event.preventDefault()
                         }}
                     >
@@ -127,25 +168,20 @@ export const Filter = (props) => {
                                 onChange={(event) => setTag(event.target.value)}
                             />
                         </div>
-                    </form>
+                    </div>
                     <div className="d-flex flex-direction-row mx-2 mb-2 mt-1" style={{ 'flexWrap': 'wrap', 'overflowX': 'auto' }}>
-                        {tags ? tags.map((tag, index) => <Tag tag={tag} key={index + 10000} id={index + 10000} tags={tags} setTags={setTags} />) : ''}
+                        {filter.tags ? filter.tags.map((tag, index) => <Tag tag={tag} key={index + 10000} id={index + 10000} tags={tags} setTags={setTags} />) : ''}
                     </div>
 
-                </div>
+                </form>
+                {/* for form debug */}
+                {/* <p>The current form values are:</p>
+
+                    <pre>{JSON.stringify(filter || {}, null, 2)}</pre> */}
                 <div className="d-flex justify-content-center">
                     <button className="btn btn-warning mb-3 shadow-none"
-                        onClick={() => {
-                            props.setFilters({
-                                filmsChecked,
-                                gamesChecked,
-                                booksChecked,
-                                musicChecked,
-                                fromDate,
-                                toDate,
-                                tags
-                            })
-                        }}
+                        type="submit"
+                        form="filterForm"
                     >Применить</button>
                 </div>
             </div>
