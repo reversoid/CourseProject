@@ -273,9 +273,11 @@ class authController {
                     category
                 FROM posts
                         JOIN users u on u.id = posts.uid_fk
+                
                 ${(dateQuery || categoryQuery || tagsQuery || usernameQuery)?'where':''}
                 ${dateQuery} ${categoryQuery} ${tagsQuery} ${usernameQuery}
                 ORDER BY created DESC
+                LIMIT 3
             `)
 
             return res.json({

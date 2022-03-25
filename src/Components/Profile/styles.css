@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    position: relative;
 }
 .profile-image{
     width: 200px;
@@ -9,4 +10,9 @@
     background-image: url('./img/profile.svg');
     background-repeat: no-repeat;
     background-size: cover;
+}
+.exit-button{
+    position: absolute;
+    right: 0;
+    top: 0;
 }

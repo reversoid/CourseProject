@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { Filter } from "../Feed/Filter/Filter"
 import { Review } from "../Feed/Review/Review"
-import {} from '../Feed/Review/Comment'
-import { Navigation } from "../Navigation/Navigation"
 import {getProfile} from '../../api/getProfile'
 import {getPosts} from '../../api/getPosts'
 import {getCurrentUserData} from '../../api/getCurrentUserData'
-
+import {logout} from '../../api/logout'
 import {Route, Routes, Link, Navigate} from 'react-router-dom'
 
 import './styles.css'
@@ -49,6 +47,15 @@ export const Profile = () => {
                 <div className="row d-flex flex-column">
                     <div className="profile-image-container">
                         <div className="profile-image"></div>
+                        <span className="exit-button text-danger"
+                        role={"button"}
+                        onClick={()=>{
+                            logout().then(()=>{
+                                // window.location.reload(false);
+                            })
+                        }}
+                        >Exit</span>
+
                     </div>
 
                     {username?username:''}

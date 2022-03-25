@@ -3,6 +3,7 @@ const {secret} = require('../config.js')
 
 const Authorization = (req, res, next) => {
     const token = req.cookies.access_token;
+    console.log('my cookies', token);
     if (!token) {
         return res.status(403).json({message: 'No access cookie'});
     }
