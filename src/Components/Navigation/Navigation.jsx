@@ -4,13 +4,40 @@ import { AuthModal } from './AuthModal'
 import './styles.css'
 import { fullTextSearch } from '../../api/fullTextSearch'
 import { getCurrentUserData } from '../../api/getCurrentUserData'
-export const Navigation = () => {
+import {useQueryParam} from '../../hooks/useQueryParam'
+
+export const Navigation = (props) => {
 
   const [profileArea, setProfileArea] = useState(
     <div className="text-primary" data-bs-toggle="modal" data-bs-target="#authModal">Sign in</div>
   )
 
   let [searchField, setSearchField] = useState('')
+
+  // URL SEARCH STARTS
+
+
+  // fill default values
+  if (!props.search.search) {
+    props.search.search = { pattern: "" };
+  }
+  async function handleSubmit(event) {
+
+    let form = event.currentTarget;
+
+    let formData = new FormData(form);
+
+    // This complex data structure is preserved in the URL in the
+    // `filter` query parameter each time a value in the form changes!
+    let search = {
+      pattern: formData.get("pattern"),
+    };
+
+    props.search.setSearch(search, { replace: true });
+    
+    // then do submit
+  }
+
   useEffect(() => {
     getCurrentUserData().then((res) => {
       if (res) {
@@ -55,19 +82,18 @@ export const Navigation = () => {
           </ul>
           <form className="d-flex ms-lg-4 ms-0 ms-lg-1 align-items-center flex-row mt-lg-0 mt-2"
             onSubmit={(event) => {
-              fullTextSearch({ pattern: searchField }).then((res) => {
-                console.log(res);
-                // <Navigate to={'/profile'}/>
-              })
+              props.search.setSearch(searchField)
               event.preventDefault()
             }}
           >
             <input className="form-control me-lg-2 me-3 shadow-none"
               type="search"
+              name="pattern"
               placeholder="Search for reviews"
               aria-label="Search"
               value={searchField}
-              onChange={(e) => setSearchField(e.target.value)}
+              defaultValue={props.search.search.pattern}
+              onChange={(e)=>{setSearchField(e.target.value)}}
             />
             <button className="btn btn-warning shadow-none ms-1" type="submit">Search</button>
           </form>

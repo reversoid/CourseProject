@@ -4,11 +4,17 @@ import {BrowserRouter} from 'react-router-dom'
 
 import App from './App';
 
+function Main(){
+  
+  return (
+  <BrowserRouter>
+      <App />
+  </BrowserRouter>)
+}
+
 ReactDOM.render(
   // <React.StrictMode>
-  <BrowserRouter>
-      <App />,
-  </BrowserRouter>,
+  <Main/>,
   // </React.StrictMode>,
   document.getElementById('root')
 );

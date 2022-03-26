@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Filter } from '../Filter/Filter'
 import { Review } from '../Review/Review'
 import { Navigation } from '../../Navigation/Navigation'
@@ -9,26 +9,43 @@ import { getPosts } from '../../../api/getPosts'
 import { getCurrentUserData } from '../../../api/getCurrentUserData'
 import { Navigate } from 'react-router-dom'
 import {useQueryParam} from '../../../hooks/useQueryParam'
+import { fullTextSearch } from '../../../api/fullTextSearch'
+import SearchContext from '../../../context'
 
 export const Feed = (props) => {
+
+    let [search, setSearch] = useQueryParam('search')|| []
 
     // posts array, my id and filters states
     let [posts, setPosts] = useState([])
     const [id, setId] = useState(1)
     let [filters, setFilters] = useQueryParam("filter") || [];
+
+
     // at the start we get posts and current user if logged in
     useEffect(() => {
         getCurrentUserData().then((response) => {
             if (!response) { return }
             setId(response.id)
         })
-        getPosts(filters).then((response) => { setPosts(response) })
+
+        // filters a more important than a search
+        if (!(filters || search) || filters){
+            getPosts(filters).then((response) => { setPosts(response) })
+        }
+        else{
+            fullTextSearch(search).then((response) => { setPosts(response) })
+        }
     }, [])
 
     // when the filter value is changed we get posts with this filter
     useEffect(() => {
         getPosts(filters).then((response) => { setPosts(response) })
     }, [filters])
+
+    useEffect(() => {
+        fullTextSearch(search).then((response) => { setPosts(response) })
+    }, [search])
 
     let [mobileFilters, setMobileFilters] = useState('d-none')
     let [mobileFiltersArrow, setMobileFiltersArrow] = useState('')
