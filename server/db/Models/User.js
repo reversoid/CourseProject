@@ -1,6 +1,7 @@
 // database
 const { Sequelize, DataTypes } = require('sequelize');
-const { mySqlUri } = require('../../config')
+const { mySqlUri } = require('../../config');
+const Post = require('./Post');
 const sequelize = new Sequelize(mySqlUri)
 
 
@@ -26,5 +27,7 @@ const User = sequelize.define('User', {
 },
     { timestamps: false }
 )
-
+Post.belongsTo(User, {foreignKey: 'uid_fk'})
+User.hasMany(Post, {foreignKey: 'id'})
 module.exports = User
+

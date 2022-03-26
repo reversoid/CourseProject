@@ -1,6 +1,7 @@
 // database
 const { Sequelize, DataTypes } = require('sequelize');
-const { mySqlUri } = require('../../config')
+const { mySqlUri } = require('../../config');
+const User = require('./User');
 const sequelize = new Sequelize(mySqlUri)
 
 
@@ -42,5 +43,4 @@ const Post = sequelize.define('Post', {
 },
     { timestamps: false }
 )
-
 module.exports = Post

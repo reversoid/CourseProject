@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import { Link, Navigate } from "react-router-dom"
 import { AuthModal } from './AuthModal'
 import './styles.css'
-import { fullTextSearch } from '../../api/fullTextSearch'
 import { getCurrentUserData } from '../../api/getCurrentUserData'
 import {useQueryParam} from '../../hooks/useQueryParam'
 
@@ -12,7 +11,7 @@ export const Navigation = (props) => {
     <div className="text-primary" data-bs-toggle="modal" data-bs-target="#authModal">Sign in</div>
   )
 
-  let [searchField, setSearchField] = useState('')
+  let [searchField, setSearchField] = useState(useQueryParam('search')[0]||'')
 
   // URL SEARCH STARTS
 

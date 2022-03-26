@@ -10,6 +10,8 @@ router.post('/logout', [Authorization], controller.logout)
 router.post('/protected', [Authorization], controller.protected)
 router.post('/getProfile', [Authorization], controller.getProfile)
 router.get('/getPosts', controller.getPosts)
+// router.get('/newGetPosts', controller.newGetPosts)
+
 router.post('/isLiked', controller.isLiked)
 
 
@@ -18,7 +20,6 @@ router.post('/like', [Authorization], controller.like)
 router.post('/comment', [Authorization], controller.comment)
 router.post('/getComments', controller.getComments)
 router.post('/getTags', controller.getTags)
-router.get('/fullTextSearch', controller.fullTextSearch)
 
 
 module.exports = router

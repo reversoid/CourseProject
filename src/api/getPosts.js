@@ -5,7 +5,7 @@ export const getPosts = async (params) => {
     try {
         const response = await axios.get(config.myUrl+'/api/auth/getPosts', {params})
         
-        return response.data.posts
+        return response.data
     } catch (e) {
     }
 }

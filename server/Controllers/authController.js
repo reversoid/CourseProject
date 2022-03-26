@@ -179,97 +179,97 @@ class authController {
     /**
      * This method returns posts according to filters set
      */
-    async getPosts(req, res) {
+    // async getPosts(req, res) {
 
-        // firstly according to some logic SQL SUBQUERIES are created and then all is passed to main sql query
-        try {
-            let {
-                // filter attributes
-                category,
-                dateFrom,
-                dateTo,
-                tags,
-                // in case this function is called in profile
-                username
+    //     // firstly according to some logic SQL SUBQUERIES are created and then all is passed to main sql query
+    //     try {
+    //         let {
+    //             // filter attributes
+    //             category,
+    //             dateFrom,
+    //             dateTo,
+    //             tags,
+    //             // in case this function is called in profile
+    //             username
 
-            } = req.query
-            // console.log(category, dateFrom, dateTo, tags);
-            
-            // MAKE CATEGORY QUERY
-            let categoryQuery = category?`category in (${category.map((el)=>{return `'${el}'`}).join(', ')})`:""
-            
-            // MAKE DATE QUERY
-            let dateQuery
-            if (!dateFrom && !dateTo) {
-                dateQuery = ''
-            } else if (!dateFrom) {
-                dateQuery = `created <= '${dateTo} 23:59:59'`
-            } else if (!dateTo) {
-                dateQuery = `created >= '${dateFrom} 00:00:00'`
-            } else {
-                //both exist
-                dateQuery = `created >= '${dateFrom} 00:00:00' AND created <= '${dateTo} 23:59:59'`
-            }
+    //         } = req.query
+    //         // console.log(category, dateFrom, dateTo, tags);
 
-            // MAKE TAGS QUERY
-            let tagsQuery
-            if (tags) {
-                let [allowedPosts, metadata] = await Tag.sequelize.query(`select post_id_fk from tags where text in (${tags.map((el)=>{return `'${el}'`}).toString()}) group by post_id_fk`)
-                if (!allowedPosts.length) {
-                    return res.json({
-                        posts: []
-                    })
-                }
-                tagsQuery = `post_id in (${allowedPosts.map((el)=>{return `${el.post_id_fk}`}).toString()})`
-            } else {
-                tagsQuery = ''
-            }
+    //         // MAKE CATEGORY QUERY
+    //         let categoryQuery = category ? `category in (${category.map((el)=>{return `'${el}'`}).join(', ')})` : ""
 
-            // MAKE USERNAME QUERY
-            let usernameQuery = username ? `username = '${username}'` : ''
+    //         // MAKE DATE QUERY
+    //         let dateQuery
+    //         if (!dateFrom && !dateTo) {
+    //             dateQuery = ''
+    //         } else if (!dateFrom) {
+    //             dateQuery = `created <= '${dateTo} 23:59:59'`
+    //         } else if (!dateTo) {
+    //             dateQuery = `created >= '${dateFrom} 00:00:00'`
+    //         } else {
+    //             //both exist
+    //             dateQuery = `created >= '${dateFrom} 00:00:00' AND created <= '${dateTo} 23:59:59'`
+    //         }
 
-            // editing everything with AND
-            if (categoryQuery) {
-                categoryQuery = ((dateQuery) ? 'AND ' : '') + categoryQuery
-            }
-            if (tagsQuery) {
-                tagsQuery = ((dateQuery || categoryQuery) ? 'AND ' : '') + tagsQuery
-            }
-            if (usernameQuery) {
-                usernameQuery = ((dateQuery || categoryQuery || tagsQuery) ? 'AND ' : '') + usernameQuery
-            }
+    //         // MAKE TAGS QUERY
+    //         let tagsQuery
+    //         if (tags) {
+    //             let [allowedPosts, metadata] = await Tag.sequelize.query(`select post_id_fk from tags where text in (${tags.map((el)=>{return `'${el}'`}).toString()}) group by post_id_fk`)
+    //             if (!allowedPosts.length) {
+    //                 return res.json({
+    //                     posts: []
+    //                 })
+    //             }
+    //             tagsQuery = `post_id in (${allowedPosts.map((el)=>{return `${el.post_id_fk}`}).toString()})`
+    //         } else {
+    //             tagsQuery = ''
+    //         }
 
-            // making final query after all edits
-            const [posts, metadata] = await Post.sequelize.query(`
-                SELECT post_id,
-                    title,
-                    text,
-                    like_count,
-                    uid_fk,
-                    rating,
-                    created,
-                    username,
-                    category
-                FROM posts
-                        JOIN users u on u.id = posts.uid_fk
+    //         // MAKE USERNAME QUERY
+    //         let usernameQuery = username ? `username = '${username}'` : ''
+
+    //         // editing everything with AND
+    //         if (categoryQuery) {
+    //             categoryQuery = ((dateQuery) ? 'AND ' : '') + categoryQuery
+    //         }
+    //         if (tagsQuery) {
+    //             tagsQuery = ((dateQuery || categoryQuery) ? 'AND ' : '') + tagsQuery
+    //         }
+    //         if (usernameQuery) {
+    //             usernameQuery = ((dateQuery || categoryQuery || tagsQuery) ? 'AND ' : '') + usernameQuery
+    //         }
+
+    //         // making final query after all edits
+    //         const [posts, metadata] = await Post.sequelize.query(`
+    //             SELECT post_id,
+    //                 title,
+    //                 text,
+    //                 like_count,
+    //                 uid_fk,
+    //                 rating,
+    //                 created,
+    //                 username,
+    //                 category
+    //             FROM posts
+    //                     JOIN users u on u.id = posts.uid_fk
                 
-                ${(dateQuery || categoryQuery || tagsQuery || usernameQuery)?'where':''}
-                ${dateQuery} ${categoryQuery} ${tagsQuery} ${usernameQuery}
-                ORDER BY created DESC
-                LIMIT 3
-            `)
+    //             ${(dateQuery || categoryQuery || tagsQuery || usernameQuery)?'where':''}
+    //             ${dateQuery} ${categoryQuery} ${tagsQuery} ${usernameQuery}
+    //             ORDER BY created DESC
+    //             LIMIT 3
+    //         `)
 
-            return res.json({
-                posts
-            })
+    //         return res.json({
+    //             posts
+    //         })
 
-        } catch (e) {
-            res.status(400).json({
-                message: 'Error accessing to database',
-                e
-            })
-        }
-    }
+    //     } catch (e) {
+    //         res.status(400).json({
+    //             message: 'Error accessing to database',
+    //             e
+    //         })
+    //     }
+    // }
     async getTags(req, res) {
 
         // this method returns tags to specific post
@@ -505,44 +505,92 @@ class authController {
         }
     }
 
-    async fullTextSearch(req, res) {
+    async getPosts(req, res) {
         try {
-            // get string with whitespaces
             const {
-                pattern
+                // for search
+                pattern,
+
+                // filter attributes
+                category,
+                dateFrom,
+                dateTo,
+                tags,
+
+                // in case this function is called in profile
+                username
+
             } = req.query
-            console.log('pattern', pattern);
-            console.log('query!', req.query);
-            if (!pattern || !pattern.trim() || !pattern.match(/^[^\+\-\*\>\<\"\@\)\(]*$/)) {
-                return res.status(400).json({
-                    posts: [],
-                    message: `Find query must not be empty and contain special symbols`
+
+            const {
+                Op
+            } = require("sequelize");
+
+            // first of all check whether there are tags
+            let allowedPosts
+            if (tags) {
+                allowedPosts = await Tag.findAll({
+                    where: {
+                        text: tags,
+                    },
+                    attributes: ['post_id_fk']
                 })
             }
 
-            const sqlQuery = pattern.split(' ').join('+')
+            const posts = await Post.findAll({
+                // attributes from posts
+                attributes: ["post_id", "title", "text", "like_count",
+                    "uid_fk", "rating", "created", "category"
+                ],
 
-            const [posts, metadata] = await Post.sequelize.query(`
-                SELECT post_id,
-                    title,
-                    text,
-                    like_count,
-                    uid_fk,
-                    rating,
-                    created,
-                    username,
-                    category
-                FROM posts
-                        JOIN users u on u.id = posts.uid_fk
-                WHERE MATCH(text) AGAINST('${sqlQuery}' IN BOOLEAN MODE)
-                ORDER BY created DESC
-            `)
-            return res.status(200).json({
-                posts
+                // attributes from user
+                include: [{
+                    model: User,
+                    attributes: ["username"],
+                    ...(username && {
+                        where: {
+                            username
+                        }
+                    })
+                }],
+
+                where: {
+                    // search
+                    ...(pattern && {
+                        where: Post.sequelize.literal(`MATCH (text) AGAINST ('${pattern}')`)
+                    }),
+
+                    // filter by date
+                    ...((dateFrom || dateTo) && {
+                        created: {
+                            ...(dateFrom && {
+                                [Op.gte]: `${dateFrom} 00:00:00`,
+                            }),
+                            ...(dateTo && {
+                                [Op.lte]: `${dateTo} 23:59:59`,
+                            })
+                        },
+                    }),
+
+                    // filter by tags 
+                    ...(allowedPosts && {
+                        post_id_fk: allowedPosts,
+                    }),
+
+                    // filter by category
+                    ...(category && {
+                        category
+                    })
+                },
+
+                limit: 3,
+                order:  [['created', 'DESC']],
+                
             })
+
+            return res.json(posts)
         } catch (error) {
-            return res.status(500).json({
-                message: 'Error connecting to database',
+            return res.status(400).json({
                 error
             })
         }

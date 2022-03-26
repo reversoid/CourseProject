@@ -1,61 +1,39 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Filter } from '../Filter/Filter'
 import { Review } from '../Review/Review'
-import { Navigation } from '../../Navigation/Navigation'
 import './styles.css'
 import { AddReviewModal } from './AddReviewModal'
 import { DropZone } from './DropZone'
 import { getPosts } from '../../../api/getPosts'
 import { getCurrentUserData } from '../../../api/getCurrentUserData'
-import { Navigate } from 'react-router-dom'
-import {useQueryParam} from '../../../hooks/useQueryParam'
-import { fullTextSearch } from '../../../api/fullTextSearch'
-import SearchContext from '../../../context'
+import { useQueryParam } from '../../../hooks/useQueryParam'
+
 
 export const Feed = (props) => {
 
-    let [search, setSearch] = useQueryParam('search')|| []
+    let [search, setSearch] = useQueryParam('search') || []
 
     // posts array, my id and filters states
     let [posts, setPosts] = useState(new Array())
     const [id, setId] = useState(1)
+
     let [filters, setFilters] = useQueryParam("filter") || [];
 
-
     // at the start we get posts and current user if logged in
-    useEffect(()=>{
+    useEffect(() => {
         getCurrentUserData().then((response) => {
             if (!response) { return }
             setId(response.id)
         })
-        // filters a more important than a search
-        if (!(filters || props.search.search) || filters){
-            getPosts(filters).then((response) => { setPosts(response) })
+        let allFilters = {
+            ...(props.search.search&&{pattern:props.search.search}),
+            ...filters
         }
-        else{
-            fullTextSearch(props.search.search).then((response) => {setPosts([]); setPosts(response); React.Component()})
-        }
+        getPosts(allFilters).then((response) => {
+            setPosts([]);
+            setPosts(response);
+        })
     }, [filters, props.search.search])
-
-    // useEffect(() => {
-    //     getPosts(filters).then((response) => { setPosts(response) })
-    // }, [filters])
-
-    // useEffect(()=>{
-    //     console.log('changed!');
-    //     fullTextSearch(props.search.search).then((response) => {setPosts(response)})
-        
-            
-    // }, [props.search.search])
-
-    // // when the filter value is changed we get posts with this filter
-    // useEffect(() => {
-    //     getPosts(filters).then((response) => { setPosts(response) })
-    // }, [filters])
-
-    // useEffect(() => {
-    //     fullTextSearch(search).then((response) => { setPosts(response) })
-    // }, [search])
 
     let [mobileFilters, setMobileFilters] = useState('d-none')
     let [mobileFiltersArrow, setMobileFiltersArrow] = useState('')
@@ -72,21 +50,21 @@ export const Feed = (props) => {
                 <div className="container-fluid mb-3 d-flex align-items-start flex-column d-lg-none">
                     <div className='d-flex justify-content-center'>
                         <h3 className='d-inline-block text-start mb-3'>Filters</h3>
-                        <div className={"down-arrow ms-3 "+mobileFiltersArrow} onClick={()=>{
-                            if (mobileFilters){
+                        <div className={"down-arrow ms-3 " + mobileFiltersArrow} onClick={() => {
+                            if (mobileFilters) {
                                 setMobileFilters('')
                                 setMobileFiltersArrow('rotated')
                             }
-                            else{
+                            else {
                                 setMobileFilters('d-none')
                                 setMobileFiltersArrow('')
 
                             }
                         }}></div>
                     </div>
-                    
-                    
-                    <div className={"d-block d-lg-none col-6 mx-auto col-md-6 col-12 "+mobileFilters}>
+
+
+                    <div className={"d-block d-lg-none col-6 mx-auto col-md-6 col-12 " + mobileFilters}>
                         <Filter filters={filters} setFilters={setFilters} />
                     </div>
                 </div>

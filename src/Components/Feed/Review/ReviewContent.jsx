@@ -24,7 +24,7 @@ export const ReviewContent = (props) => {
             <div className="ms-2 text-secondary my-3">
                     Written by: &nbsp;
                     <div className="written-by text-warning d-inline">
-                        {props.review.username}
+                        {props.review.User.username}
                     </div>
                     <div className="span mt-1 text-secondary">Category: <div className="text-light d-inline-block">{props.review.category?props.review.category:''}</div></div>
             </div>
