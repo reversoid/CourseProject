@@ -17,35 +17,45 @@ export const Feed = (props) => {
     let [search, setSearch] = useQueryParam('search')|| []
 
     // posts array, my id and filters states
-    let [posts, setPosts] = useState([])
+    let [posts, setPosts] = useState(new Array())
     const [id, setId] = useState(1)
     let [filters, setFilters] = useQueryParam("filter") || [];
 
 
     // at the start we get posts and current user if logged in
-    useEffect(() => {
+    useEffect(()=>{
         getCurrentUserData().then((response) => {
             if (!response) { return }
             setId(response.id)
         })
+    }, [])
 
+    useEffect(() => {
+        
         // filters a more important than a search
-        if (!(filters || search) || filters){
+        if (!(filters || props.search.search) || filters){
+            console.log('first');
             getPosts(filters).then((response) => { setPosts(response) })
         }
         else{
-            fullTextSearch(search).then((response) => { setPosts(response) })
+            console.log('second');
+            fullTextSearch(props.search.search).then((response) => {console.log(response); setPosts(response); console.log(posts); })
         }
-    }, [])
-
-    // when the filter value is changed we get posts with this filter
-    useEffect(() => {
-        getPosts(filters).then((response) => { setPosts(response) })
     }, [filters])
 
-    useEffect(() => {
-        fullTextSearch(search).then((response) => { setPosts(response) })
-    }, [search])
+    useEffect(()=>{
+        if (props.search.search)
+            fullTextSearch(props.search.search).then((response) => {setPosts(response)})
+    }, [props.search.search])
+
+    // // when the filter value is changed we get posts with this filter
+    // useEffect(() => {
+    //     getPosts(filters).then((response) => { setPosts(response) })
+    // }, [filters])
+
+    // useEffect(() => {
+    //     fullTextSearch(search).then((response) => { setPosts(response) })
+    // }, [search])
 
     let [mobileFilters, setMobileFilters] = useState('d-none')
     let [mobileFiltersArrow, setMobileFiltersArrow] = useState('')

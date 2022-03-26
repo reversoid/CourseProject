@@ -92,7 +92,6 @@ export const Navigation = (props) => {
               placeholder="Search for reviews"
               aria-label="Search"
               value={searchField}
-              defaultValue={props.search.search.pattern}
               onChange={(e)=>{setSearchField(e.target.value)}}
             />
             <button className="btn btn-warning shadow-none ms-1" type="submit">Search</button>
