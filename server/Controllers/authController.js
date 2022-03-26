@@ -123,7 +123,6 @@ class authController {
     async logout(req, res) {
         return res
             .clearCookie('access_token')
-            .status(200)
             .json({
                 message: 'Succesfully logged out'
             })

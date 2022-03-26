@@ -48,14 +48,21 @@ export const Profile = () => {
                 <div className="row d-flex flex-column">
                     <div className="profile-image-container">
                         <div className="profile-image"></div>
-                        <span className="exit-button text-danger"
-                        role={"button"}
-                        onClick={()=>{
-                            logout().then(()=>{
-                                // window.location.reload(false);
-                            })
-                        }}
-                        >Exit</span>
+                        
+                        <Link to={'/feed'}>
+                            <button type="button"
+                            className="btn-close btn-close-white shadow-none exit-button me-5 mt-1"
+                            aria-label="Close"
+                            onClick={()=>{
+                                logout().then((res)=>{
+                                    if (res)
+                                        window.location.reload(false);
+                                })
+                            }}
+                            title="Log out"
+                            ></button>
+                        </Link>
+                        
 
                     </div>
 
