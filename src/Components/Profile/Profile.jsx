@@ -35,7 +35,8 @@ export const Profile = () => {
             setUsername(<h1 className="username fw-bold text-center py-3 mb-5">{res.username}</h1>);
             setId(res.id)
             getProfile(String(res.username)).then((response)=>{
-                setLikesCount(response.profileInfo.user_likes_count)
+                if (response)
+                    setLikesCount(response.profileInfo.user_likes_count)
             })
             getPosts({username: res.username}).then((response)=>{
                 setPosts(response)})
