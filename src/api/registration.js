@@ -6,7 +6,7 @@ export const toRegister = async (username, password, showInfo) => {
         const response = await axios.post(config.myUrl+'/api/auth/registration', {
         username,
         password
-        })
+        }, {withCredentials: true})
         showInfo(response.data)
        
     } catch (e) {

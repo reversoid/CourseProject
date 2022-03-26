@@ -34,13 +34,13 @@ class authController {
                 username,
                 password
             } = req.body
-            const candidate = await User.findOne({
-                where: {
-                    username
-                }
-            })
+            console.log(req.body);
 
-            if (candidate)
+            const [candidate, metadata] = await User.sequelize.query(`
+                select id from users where username='${username}'
+            `)
+
+            if (candidate.length != 0)
                 return res.status(400).json({
                     message: 'User already exists'
                 })
@@ -48,16 +48,21 @@ class authController {
 
             const hashedPassword = bcrypt.hashSync(password, 7)
 
-
             const user = new User({
                 username,
-                password: hashedPassword
+                password: hashedPassword,
+                user_likes_count: 0
             })
 
             await user.save()
 
             const token = generateAcessToken(user._id, user.username)
-            return res.json({
+            return res.cookie("access_token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                maxAge: 1000 * 60 * 60 * 48,
+                sameSite: 'Strict'
+            }).json({
                 message: 'User has been succesfully created',
                 code: 0,
                 token
@@ -252,7 +257,7 @@ class authController {
     //                 category
     //             FROM posts
     //                     JOIN users u on u.id = posts.uid_fk
-                
+
     //             ${(dateQuery || categoryQuery || tagsQuery || usernameQuery)?'where':''}
     //             ${dateQuery} ${categoryQuery} ${tagsQuery} ${usernameQuery}
     //             ORDER BY created DESC
@@ -584,8 +589,10 @@ class authController {
                 },
 
                 limit: 3,
-                order:  [['created', 'DESC']],
-                
+                order: [
+                    ['created', 'DESC']
+                ],
+
             })
 
             return res.json(posts)
