@@ -28,25 +28,25 @@ export const Feed = (props) => {
             if (!response) { return }
             setId(response.id)
         })
-    }, [])
-
-    useEffect(() => {
-        
         // filters a more important than a search
         if (!(filters || props.search.search) || filters){
-            console.log('first');
             getPosts(filters).then((response) => { setPosts(response) })
         }
         else{
-            console.log('second');
-            fullTextSearch(props.search.search).then((response) => {console.log(response); setPosts(response); console.log(posts); })
+            fullTextSearch(props.search.search).then((response) => {setPosts([]); setPosts(response); React.Component()})
         }
-    }, [filters])
+    }, [filters, props.search.search])
 
-    useEffect(()=>{
-        if (props.search.search)
-            fullTextSearch(props.search.search).then((response) => {setPosts(response)})
-    }, [props.search.search])
+    // useEffect(() => {
+    //     getPosts(filters).then((response) => { setPosts(response) })
+    // }, [filters])
+
+    // useEffect(()=>{
+    //     console.log('changed!');
+    //     fullTextSearch(props.search.search).then((response) => {setPosts(response)})
+        
+            
+    // }, [props.search.search])
 
     // // when the filter value is changed we get posts with this filter
     // useEffect(() => {
