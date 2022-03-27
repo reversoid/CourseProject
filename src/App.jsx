@@ -12,7 +12,7 @@ function App() {
       <Navigation search={{search, setSearch}}/>
       <Routes>
         <Route path='/feed' element={<Feed search={{search, setSearch}}/>}/>
-        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/profile' element={<Profile search={{search, setSearch}}/>}/>
         <Route path='*' element={<Navigate to='/feed'/>}/>
       </Routes>
     </div>

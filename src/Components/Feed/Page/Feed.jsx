@@ -7,10 +7,11 @@ import { DropZone } from './DropZone'
 import { getPosts } from '../../../api/getPosts'
 import { getCurrentUserData } from '../../../api/getCurrentUserData'
 import { useQueryParam } from '../../../hooks/useQueryParam'
+import { Loading } from '../../Loading'
 
 
 export const Feed = (props) => {
-
+    let [loading, setLoading] = useState(false)
     let [search, setSearch] = useQueryParam('search') || false
 
     // posts array, my id and filters states
@@ -19,6 +20,7 @@ export const Feed = (props) => {
 
     let [filters, setFilters] = useQueryParam("filter") || false;
 
+    
     // at the start we get posts and current user if logged in
     useEffect(() => {
         getCurrentUserData().then((response) => {
@@ -29,7 +31,7 @@ export const Feed = (props) => {
             ...(props.search.search && { pattern: props.search.search }),
             ...filters
         }
-        getPosts(allFilters).then((response) => {
+        getPosts(allFilters, setLoading).then((response) => {
             setPosts([]);
             setPosts(response);
         })
@@ -58,9 +60,7 @@ export const Feed = (props) => {
                 <div className="toolbar container-fluid">
                     <div className="py-3 w-100 mb-2">
                         <h1 className='d-inline-block mb-0'>Reviews</h1>
-                        <div className="spinner-border ms-4" role="status" style={{ "width": "1.5rem", "height": '1.5rem' }}>
-                            <span className="visually-hidden">Loading...</span>
-                        </div>
+                        {loading?<Loading/>:''}
                     </div>
 
 

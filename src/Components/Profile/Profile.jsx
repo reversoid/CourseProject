@@ -8,8 +8,9 @@ import {logout} from '../../api/logout'
 import {Route, Routes, Link, Navigate} from 'react-router-dom'
 
 import './styles.css'
-export const Profile = () => {
-    
+import { Loading } from "../Loading"
+export const Profile = (props) => {
+    let [loading, setLoading] = useState(false)
     const [username, setUsername] = useState(
         <div className="placeholder-glow mb-5 mt-3 d-flex justify-content-center">
             <span className="placeholder col-3 py-3 mx-auto"></span>
@@ -23,14 +24,26 @@ export const Profile = () => {
 
     let [filters, setFilters] = useState(new Object())
 
-    useEffect(()=>{
-        filters.username = username
-        getPosts(filters).then((response)=>{setPosts(response)})
-    }, [filters])
+    // useEffect(()=>{
+    //     filters.username = username
+    //     getPosts(filters, setLoading).then((response)=>{setPosts(response)})
+    // }, [filters])
 
-    useEffect(()=>{
+    // useEffect(()=>{
 
-        // set username and get post for it
+    //     // set username and get post for it
+    //     getCurrentUserData().then((res)=>{
+    //         setUsername(<h1 className="username fw-bold text-center py-3 mb-5">{res.username}</h1>);
+    //         setId(res.id)
+    //         getProfile(String(res.username)).then((response)=>{
+    //             if (response)
+    //                 setLikesCount(response.profileInfo.user_likes_count)
+    //         })
+    //         getPosts({username: res.username, setLoading}).then((response)=>{
+    //             setPosts(response)})
+    //     })   
+    // }, [])
+    useEffect(() => {
         getCurrentUserData().then((res)=>{
             setUsername(<h1 className="username fw-bold text-center py-3 mb-5">{res.username}</h1>);
             setId(res.id)
@@ -38,10 +51,10 @@ export const Profile = () => {
                 if (response)
                     setLikesCount(response.profileInfo.user_likes_count)
             })
-            getPosts({username: res.username}).then((response)=>{
+            getPosts({username: res.username}, setLoading).then((response)=>{
                 setPosts(response)})
         })   
-    }, [])
+    }, [filters, props.search.search])
     return (
         <>
             <div className="container-xxl text-light mt-5">
@@ -69,7 +82,8 @@ export const Profile = () => {
                     {username?username:''}
                 </div>
                 <div className="container-fluid">
-                    <h1 className="py-3 pb-lg-5 d-inline-block">My reviews</h1>
+
+                    <h1 className="py-3 pb-lg-5 d-inline-block">My reviews</h1> {loading?<Loading/>:''}
                     <h4 className="ms-lg-3 text-success d-lg-inline-block d-block pb-5 pb-lg-0">Total rating {likesCount}</h4>
                 </div>
 
