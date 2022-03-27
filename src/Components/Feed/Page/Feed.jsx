@@ -11,13 +11,13 @@ import { useQueryParam } from '../../../hooks/useQueryParam'
 
 export const Feed = (props) => {
 
-    let [search, setSearch] = useQueryParam('search') || []
+    let [search, setSearch] = useQueryParam('search') || false
 
     // posts array, my id and filters states
     let [posts, setPosts] = useState(new Array())
     const [id, setId] = useState(1)
 
-    let [filters, setFilters] = useQueryParam("filter") || [];
+    let [filters, setFilters] = useQueryParam("filter") || false;
 
     // at the start we get posts and current user if logged in
     useEffect(() => {
@@ -26,7 +26,7 @@ export const Feed = (props) => {
             setId(response.id)
         })
         let allFilters = {
-            ...(props.search.search&&{pattern:props.search.search}),
+            ...(props.search.search && { pattern: props.search.search }),
             ...filters
         }
         getPosts(allFilters).then((response) => {
@@ -39,11 +39,31 @@ export const Feed = (props) => {
     let [mobileFiltersArrow, setMobileFiltersArrow] = useState('')
 
     let [navigate, setNavigate] = useState('')
+
+    let [btnDeleteSearch, setBtnDeleteSearch] = useState(<><button
+        onClick={() => {
+            props.search.setSearch('')
+        }}
+        className="btn btn-warning rounded-pill d-inline-block shadow-none mb-2">Remove search</button> <br /></>)
+
+    let [btnDeleteFilter, setBtnDeleteFilter] = useState(<button
+        onClick={() => {
+            setFilters('')
+        }}
+        className="btn btn-warning rounded-pill d-inline-block shadow-none">Remove filters&nbsp;</button>)
+
     return (
         <>
             <section className='container-xxl text-light main-section'>
                 <div className="toolbar container-fluid">
-                    <h1 className='py-3 w-100'>Reviews</h1>
+                    <div className="py-3 w-100 mb-2">
+                        <h1 className='d-inline-block mb-0'>Reviews</h1>
+                        <div className="spinner-border ms-4" role="status" style={{ "width": "1.5rem", "height": '1.5rem' }}>
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+
                     <div className="add-btn ms-3" data-bs-toggle="modal" data-bs-target="#addModal"></div>
                     <AddReviewModal />
                 </div>
@@ -67,6 +87,12 @@ export const Feed = (props) => {
                     <div className={"d-block d-lg-none col-6 mx-auto col-md-6 col-12 " + mobileFilters}>
                         <Filter filters={filters} setFilters={setFilters} />
                     </div>
+                </div>
+
+                <div className="interaction container-fluid mb-3">
+                    {props.search.search?btnDeleteSearch:''}
+                    
+                    {filters?btnDeleteFilter:''}
                 </div>
 
                 <div className="row">
