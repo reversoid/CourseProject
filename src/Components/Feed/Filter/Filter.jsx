@@ -52,11 +52,7 @@ export const Filter = (props) => {
             <h4 className="text-center py-3 pb-4">Filters</h4>
 
             <div className="">
-                <form id="filterForm" className="d-flex flex-column" onSubmit={(e) => {
-                    // PROBABLY MUST BE DELETED CAUSE NO SUBMIT IS HERE
-                    props.setFilters(filter)
-                    e.preventDefault()
-                }}
+                <form id="filterForm" className="d-flex flex-column"
                     onChange={handleChange}
                 >
                     {/* CATEGORY SECTION */}
@@ -178,12 +174,12 @@ export const Filter = (props) => {
                 {/* <p>The current form values are:</p>
 
                     <pre>{JSON.stringify(filter || {}, null, 2)}</pre> */}
-                <div className="d-flex justify-content-center">
+                {/* <div className="d-flex justify-content-center">
                     <button className="btn btn-warning mb-3 shadow-none"
                         type="submit"
                         form="filterForm"
                     >Применить</button>
-                </div>
+                </div> */}
             </div>
         </div>
     )
