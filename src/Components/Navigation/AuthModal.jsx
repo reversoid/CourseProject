@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { toRegister } from '../../api/registration'
 import { toLogin } from '../../api/login'
+import { Loading } from "../Loading"
 
 // import { Loader } from "../Loader/Loader"
 
 
 
 export const AuthModal = () => {
+    let [loading, setLoading] = useState(false)
     let [login, setLogin] = useState('')
     let [password, setPassword] = useState('')
 
@@ -14,11 +16,11 @@ export const AuthModal = () => {
 
     function showInfo(response){
         if(response.code===0){
-            setInfo(<div className="text-success mt-2">Success</div>)
+            setInfo(<div className="text-success d-inlie-block">Success</div>)
             window.location.reload(false);
         }
         else{
-            setInfo(<div className="text-danger mt-2">{response.message}</div>)
+            setInfo(<div className="text-danger d-inline-block">{response.message}</div>)
         }
     }
 
@@ -48,8 +50,11 @@ export const AuthModal = () => {
                                     placeholder="Password"
                                     value={password}
                                     onChange={(event) => setPassword(event.target.value)} />
-
-                                {info}
+                                
+                                <div className="mt-2 d-flex align-items-center">
+                                    {info} {loading?<Loading styles={'ms-2 my-0 py-0'}/>:''}
+                                </div>
+                                
                             </form>
                         </div>
                     </div>
@@ -61,12 +66,12 @@ export const AuthModal = () => {
                         <div className="buttons">
                             <button type="button"
                                 className="btn btn-warning me-3"
-                                onClick={() => toRegister(login, password, showInfo)}>
+                                onClick={() => toRegister(login, password, showInfo, setLoading)}>
                                 Registration
                             </button>
                             <button type="button"
                             className="btn btn-primary"
-                            onClick={()=> toLogin(login, password, showInfo)}>
+                            onClick={()=> toLogin(login, password, showInfo, setLoading)}>
                                 Login</button>
                         </div>
                     </div>
