@@ -360,12 +360,14 @@ class authController {
                     post_id_fk: post_id
                 }
             })
+            
             if (like_candidate) {
                 //decrease amount of likes
                 const postToDecreaseLike = await Post.findOne({
                     where: {
                         post_id: post_id
-                    }
+                    },
+                    attributes: {exclude: ['id']}
                 })
                 // console.log(postToDecreaseLike.getDataValue('like_count'));
                 postToDecreaseLike.setDataValue('like_count', Number(postToDecreaseLike.getDataValue('like_count')) - 1)
@@ -388,7 +390,8 @@ class authController {
                 const postToIncreaseLike = await Post.findOne({
                     where: {
                         post_id: post_id
-                    }
+                    },
+                    attributes: {exclude: ['id']}
                 })
                 postToIncreaseLike.setDataValue('like_count', Number(postToIncreaseLike.getDataValue('like_count')) + 1)
                 postToIncreaseLike.save()
