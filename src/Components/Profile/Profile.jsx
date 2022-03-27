@@ -9,6 +9,7 @@ import {Route, Routes, Link, Navigate} from 'react-router-dom'
 
 import './styles.css'
 import { Loading } from "../Loading"
+import { UserNoAuth } from "./UserNoAuth"
 export const Profile = (props) => {
     let [loading, setLoading] = useState(false)
     const [username, setUsername] = useState(
@@ -23,7 +24,8 @@ export const Profile = (props) => {
     
 
     let [filters, setFilters] = useState(new Object())
-
+    
+    let [isAuth, setIsAuth] = useState(false)
     // useEffect(()=>{
     //     filters.username = username
     //     getPosts(filters, setLoading).then((response)=>{setPosts(response)})
@@ -45,7 +47,15 @@ export const Profile = (props) => {
     // }, [])
     useEffect(() => {
         getCurrentUserData().then((res)=>{
+            if(res){
+                setIsAuth(true)
+            }
+            else{
+                setIsAuth(false)
+                return
+            }
             setUsername(<h1 className="username fw-bold text-center py-3 mb-5">{res.username}</h1>);
+            
             setId(res.id)
             getProfile(String(res.username)).then((response)=>{
                 if (response)
@@ -57,7 +67,7 @@ export const Profile = (props) => {
     }, [filters, props.search.search])
     return (
         <>
-            <div className="container-xxl text-light mt-5">
+            {isAuth?<div className="container-xxl text-light mt-5">
                 <div className="row d-flex flex-column">
                     <div className="profile-image-container">
                         <div className="profile-image"></div>
@@ -96,7 +106,8 @@ export const Profile = (props) => {
                         <Filter filters={filters} setFilters={setFilters}/>
                     </div>
                 </div>
-            </div>
+            </div>:<UserNoAuth/>}
+            
         </>
     )
 }
