@@ -25,7 +25,7 @@ export const Profile = (props) => {
 
     let [filters, setFilters] = useState(new Object())
     
-    let [isAuth, setIsAuth] = useState(false)
+    let [authState, setAuthState] = useState({isAuth: false, isLoading: true})
     // useEffect(()=>{
     //     filters.username = username
     //     getPosts(filters, setLoading).then((response)=>{setPosts(response)})
@@ -48,10 +48,10 @@ export const Profile = (props) => {
     useEffect(() => {
         getCurrentUserData().then((res)=>{
             if(res){
-                setIsAuth(true)
+                setAuthState({isAuth: true, isLoading: false})
             }
             else{
-                setIsAuth(false)
+                setAuthState({isAuth: false, isLoading: false})
                 return
             }
             setUsername(<h1 className="username fw-bold text-center py-3 mb-5">{res.username}</h1>);
@@ -67,7 +67,7 @@ export const Profile = (props) => {
     }, [filters, props.search.search])
     return (
         <>
-            {isAuth?<div className="container-xxl text-light mt-5">
+            {authState.isAuth?<div className="container-xxl text-light mt-5">
                 <div className="row d-flex flex-column">
                     <div className="profile-image-container">
                         <div className="profile-image"></div>
@@ -106,7 +106,7 @@ export const Profile = (props) => {
                         <Filter filters={filters} setFilters={setFilters}/>
                     </div>
                 </div>
-            </div>:<UserNoAuth/>}
+            </div>:authState.isLoading?'':<UserNoAuth/>}
             
         </>
     )
