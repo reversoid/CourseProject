@@ -590,7 +590,7 @@ class authController {
                     })
                 },
 
-                
+                limit: 5,
                 order: [
                     ['created', 'DESC']
                 ],
