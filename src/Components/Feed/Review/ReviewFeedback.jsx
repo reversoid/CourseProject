@@ -28,6 +28,16 @@ export const ReviewFeedback = (props) => {
             }
             
         })
+        let timerComments = setInterval(()=>{
+            getComments(props.post_id).then((response)=>{
+                if (response.toString() != comments.toString())
+                {
+                    setComments(response)
+                }
+                    
+            })
+        }, 5000)
+        return ()=>{clearInterval(timerComments)}
     }, [])
     return (
         <div className="mx-lg-4 mx-3">
