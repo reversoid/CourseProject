@@ -20,7 +20,7 @@ export const Feed = (props) => {
 
     let [filters, setFilters] = useQueryParam("filter") || false;
 
-    
+
     // at the start we get posts and current user if logged in
     useEffect(() => {
         getCurrentUserData().then((response) => {
@@ -32,9 +32,16 @@ export const Feed = (props) => {
             ...filters
         }
         getPosts(allFilters, setLoading).then((response) => {
-            setPosts([]);
             setPosts(response);
         })
+        let timerFeed = setInterval(() =>
+            getPosts(allFilters, () => { }).then((response) => {
+                if (JSON.stringify(response) != JSON.stringify(posts)) {
+                    setPosts(response);
+                }
+            }), 5000)
+
+        return () => { clearInterval(timerFeed) }
     }, [filters, props.search.search])
 
     let [mobileFilters, setMobileFilters] = useState('d-none')
@@ -60,7 +67,7 @@ export const Feed = (props) => {
                 <div className="toolbar container-fluid">
                     <div className="py-3 w-100 mb-2">
                         <h1 className='d-inline-block mb-0'>Reviews</h1>
-                        {loading?<Loading/>:''}
+                        {loading ? <Loading /> : ''}
                     </div>
 
 
@@ -90,14 +97,14 @@ export const Feed = (props) => {
                 </div>
 
                 <div className="interaction container-fluid mb-3">
-                    {props.search.search?btnDeleteSearch:''}
-                    
-                    {filters?btnDeleteFilter:''}
+                    {props.search.search ? btnDeleteSearch : ''}
+
+                    {filters ? btnDeleteFilter : ''}
                 </div>
 
                 <div className="row">
                     <div className="col-md-12 col-lg-9">
-                        {posts ? posts.map((post, index) => { return <Review post={post} key={index} currentId={id} /> }) : ''}
+                        {posts ? posts.map((post, index) => { return <Review post={post} key={index + 100000000} currentId={id} /> }) : ''}
                     </div>
                     <div className="col-lg-3 d-none d-lg-block">
                         <Filter filters={filters} setFilters={setFilters} />
