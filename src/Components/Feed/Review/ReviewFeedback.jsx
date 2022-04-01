@@ -6,6 +6,7 @@ import {getComments} from '../../../api/getComments'
 import {getCurrentUserData} from '../../../api/getCurrentUserData'
 
 import {isLiked} from '../../../api/isLiked'
+import {v4 as uuidv4} from 'uuid'
 
 
 export const ReviewFeedback = (props) => {
@@ -61,7 +62,7 @@ export const ReviewFeedback = (props) => {
             
             <div className={commentCollapsed?"container px-3 px-lg-4 comments-collapsed":"container-lg  mx-0"}>
 
-                {comments?comments.map((comment, index)=>{return <Comment comment={comment} key={index+30}/>}):''}
+                {comments?comments.map((comment, index)=>{return <Comment comment={comment} key={uuidv4()}/>}):''}
                 <div className="mt-4">
                     <textarea className="form-control"
                     name=""

@@ -581,7 +581,7 @@ class authController {
 
                     // filter by tags 
                     ...(allowedPosts && {
-                        post_id_fk: allowedPosts,
+                        post_id: allowedPosts.map((el)=>{return el.getDataValue('post_id_fk')}),
                     }),
 
                     // filter by category

@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState } from 'react'
 import * as JSURL from "jsurl";
 import { Tag } from '../../Feed/Review/Tag'
+import {v4 as uuidv4} from 'uuid'
 
 import { useQueryParam } from '../../../hooks/useQueryParam'
 import './styles.css'
@@ -166,7 +167,7 @@ export const Filter = (props) => {
                         </div>
                     </div>
                     <div className="d-flex flex-direction-row mx-2 mb-2 mt-1" style={{ 'flexWrap': 'wrap', 'overflowX': 'auto' }}>
-                        {filter.tags ? filter.tags.map((tag, index) => <Tag tag={tag} key={index + 10000} id={index + 10000} tags={tags} setTags={setTags} />) : ''}
+                        {filter.tags ? filter.tags.map((tag, index) => <Tag tag={tag} key={uuidv4()} id={index + 10000} tags={tags} setTags={setTags} />) : ''}
                     </div>
 
                 </form>

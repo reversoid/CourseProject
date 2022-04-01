@@ -8,6 +8,7 @@ import { getPosts } from '../../../api/getPosts'
 import { getCurrentUserData } from '../../../api/getCurrentUserData'
 import { useQueryParam } from '../../../hooks/useQueryParam'
 import { Loading } from '../../Loading'
+import {v4 as uuidv4} from 'uuid'
 
 
 export const Feed = (props) => {
@@ -104,7 +105,7 @@ export const Feed = (props) => {
 
                 <div className="row">
                     <div className="col-md-12 col-lg-9">
-                        {posts ? posts.map((post, index) => { return <Review post={post} key={index + 100000000} currentId={id} /> }) : ''}
+                        {posts ? posts.map((post, index) => { return <Review post={post} key={uuidv4()} currentId={id} /> }) : ''}
                     </div>
                     <div className="col-lg-3 d-none d-lg-block">
                         <Filter filters={filters} setFilters={setFilters} />

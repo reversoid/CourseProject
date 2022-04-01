@@ -11,6 +11,8 @@ import './styles.css'
 import { Loading } from "../Loading"
 import { UserNoAuth } from "./UserNoAuth"
 import { useQueryParam } from '../../hooks/useQueryParam'
+import {v4 as uuidv4} from 'uuid'
+
 export const Profile = (props) => {
 
     let [loading, setLoading] = useState(false)
@@ -127,7 +129,7 @@ export const Profile = (props) => {
 
                 <div className="row">
                     <div className="col-md-12 col-lg-9">
-                        {posts ? posts.map((post, index) => { return <Review post={post} key={index} currentId={id} /> }) : ''}
+                        {posts ? posts.map((post, index) => { return <Review post={post} key={uuidv4()} currentId={id} /> }) : ''}
 
                     </div>
                     <div className="col-lg-3 d-none d-lg-block">

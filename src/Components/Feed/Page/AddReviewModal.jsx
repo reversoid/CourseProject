@@ -3,7 +3,7 @@ import { DropZone } from "./DropZone";
 import RichEditor from "./RichEditor";
 import { publish } from "../../../api/publish"
 import { Tag } from "../Review/Tag";
-
+import {v4 as uuidv4} from 'uuid'
 export const AddReviewModal = () => {
 
     const onDrop = useCallback(acceptedFiles => {
@@ -125,7 +125,7 @@ export const AddReviewModal = () => {
                                     {
                                         // add 
                                         // tags={tags} setTags={setTags}
-                                        tags ? tags.map((tag, index) => {return <Tag tag={tag} key={index + 100} id={index}/>}) : ''
+                                        tags ? tags.map((tag, index) => {return <Tag tag={tag} key={uuidv4()} id={index}/>}) : ''
                                     }
 
                                 </div>

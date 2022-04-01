@@ -6,6 +6,7 @@ import RichViewer from "./RichViewer";
 import { Tag } from "./Tag";
 import {getTags} from '../../../api/getTags'
 import { render } from "@testing-library/react";
+import {v4 as uuidv4} from 'uuid'
 
 export const ReviewContent = (props) => {
     const [created, setCreated] = useState(props.review.created)
@@ -37,7 +38,7 @@ export const ReviewContent = (props) => {
             <ReviewContentScore rating={props.review.rating} color={color} hoverTitle={hoverTitle}/>
 
             <div className="tags mb-2">
-                {tags?tags.map((tag, index)=>{return <Tag tag={tag.text} key={index + 10000}/>}):''}
+                {tags?tags.map((tag, index)=>{return <Tag tag={tag.text} key={uuidv4()}/>}):''}
                 {/* <Tag tag={'hehehe1'}/> */}
             </div>
             <div className="text-secondary ms-2 mb-3">UTC {created?created.slice(0, 19).replace('T', ' '):''}</div>
